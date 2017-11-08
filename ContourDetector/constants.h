@@ -15,3 +15,7 @@
 #ifndef BLUE_COEF
 #define BLUE_COEF 0.0721
 #endif
+
+#ifndef CLR_PCKR_STYLE
+#define CLR_PCKR_STYLE "border: 1px solid black; background-color: "
+#endif CLR_PCKR_STYLE

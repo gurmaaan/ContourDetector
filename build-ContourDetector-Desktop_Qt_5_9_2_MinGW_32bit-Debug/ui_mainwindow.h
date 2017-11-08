@@ -18,6 +18,7 @@
 #include <QtWidgets/QLabel>
 #include <QtWidgets/QLineEdit>
 #include <QtWidgets/QMainWindow>
+#include <QtWidgets/QPushButton>
 #include <QtWidgets/QRadioButton>
 #include <QtWidgets/QSlider>
 #include <QtWidgets/QSpacerItem>
@@ -40,7 +41,10 @@ public:
     QHBoxLayout *horizontalLayout_4;
     QLabel *trashholdLabel;
     QSpinBox *devesaionSpinBox;
-    QSpacerItem *horizontalSpacer;
+    QSpacerItem *horizontalSpacer_2;
+    QPushButton *findContourButton;
+    QLabel *colorPeakerLabel;
+    QPushButton *colorPeakerButton;
     QLabel *imageLabel;
     QHBoxLayout *horizontalLayout_3;
     QHBoxLayout *horizontalLayout_2;
@@ -48,14 +52,14 @@ public:
     QSlider *trashholSlider;
     QLabel *trashholdSliderMaxLabel;
     QRadioButton *colorRadio;
-    QRadioButton *bawDevide3Radio;
     QRadioButton *bawFormulaRadio;
+    QRadioButton *tresholdRatio;
 
     void setupUi(QMainWindow *MainWindow)
     {
         if (MainWindow->objectName().isEmpty())
             MainWindow->setObjectName(QStringLiteral("MainWindow"));
-        MainWindow->resize(658, 613);
+        MainWindow->resize(658, 594);
         centralWidget = new QWidget(MainWindow);
         centralWidget->setObjectName(QStringLiteral("centralWidget"));
         verticalLayout = new QVBoxLayout(centralWidget);
@@ -67,6 +71,11 @@ public:
         horizontalLayout->setObjectName(QStringLiteral("horizontalLayout"));
         pathLabel = new QLabel(centralWidget);
         pathLabel->setObjectName(QStringLiteral("pathLabel"));
+        QFont font;
+        font.setPointSize(10);
+        font.setBold(true);
+        font.setWeight(75);
+        pathLabel->setFont(font);
         pathLabel->setAlignment(Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter);
 
         horizontalLayout->addWidget(pathLabel);
@@ -90,6 +99,7 @@ public:
         horizontalLayout_4->setObjectName(QStringLiteral("horizontalLayout_4"));
         trashholdLabel = new QLabel(centralWidget);
         trashholdLabel->setObjectName(QStringLiteral("trashholdLabel"));
+        trashholdLabel->setFont(font);
 
         horizontalLayout_4->addWidget(trashholdLabel);
 
@@ -101,9 +111,28 @@ public:
 
         horizontalLayout_4->addWidget(devesaionSpinBox);
 
-        horizontalSpacer = new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
+        horizontalSpacer_2 = new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
 
-        horizontalLayout_4->addItem(horizontalSpacer);
+        horizontalLayout_4->addItem(horizontalSpacer_2);
+
+        findContourButton = new QPushButton(centralWidget);
+        findContourButton->setObjectName(QStringLiteral("findContourButton"));
+
+        horizontalLayout_4->addWidget(findContourButton);
+
+        colorPeakerLabel = new QLabel(centralWidget);
+        colorPeakerLabel->setObjectName(QStringLiteral("colorPeakerLabel"));
+        colorPeakerLabel->setAlignment(Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter);
+
+        horizontalLayout_4->addWidget(colorPeakerLabel);
+
+        colorPeakerButton = new QPushButton(centralWidget);
+        colorPeakerButton->setObjectName(QStringLiteral("colorPeakerButton"));
+        colorPeakerButton->setStyleSheet(QLatin1String("border: 1px solid black;\n"
+"background-color: red;"));
+        colorPeakerButton->setFlat(false);
+
+        horizontalLayout_4->addWidget(colorPeakerButton);
 
 
         verticalLayout->addLayout(horizontalLayout_4);
@@ -111,9 +140,14 @@ public:
         imageLabel = new QLabel(centralWidget);
         imageLabel->setObjectName(QStringLiteral("imageLabel"));
         imageLabel->setMinimumSize(QSize(640, 480));
+        imageLabel->setFocusPolicy(Qt::StrongFocus);
+        imageLabel->setAutoFillBackground(false);
         imageLabel->setStyleSheet(QLatin1String("background: rgb(255, 255, 255);\n"
-"border-color: rgb(0, 0, 0);\n"
-"border-size: 2px;"));
+"border: 1px solid black;\n"
+"padding: 5px;"));
+        imageLabel->setFrameShape(QFrame::NoFrame);
+        imageLabel->setScaledContents(true);
+        imageLabel->setAlignment(Qt::AlignCenter);
 
         verticalLayout->addWidget(imageLabel);
 
@@ -152,22 +186,32 @@ public:
 
         horizontalLayout_3->addWidget(colorRadio);
 
-        bawDevide3Radio = new QRadioButton(centralWidget);
-        bawDevide3Radio->setObjectName(QStringLiteral("bawDevide3Radio"));
-
-        horizontalLayout_3->addWidget(bawDevide3Radio);
-
         bawFormulaRadio = new QRadioButton(centralWidget);
         bawFormulaRadio->setObjectName(QStringLiteral("bawFormulaRadio"));
 
         horizontalLayout_3->addWidget(bawFormulaRadio);
 
+        tresholdRatio = new QRadioButton(centralWidget);
+        tresholdRatio->setObjectName(QStringLiteral("tresholdRatio"));
+
+        horizontalLayout_3->addWidget(tresholdRatio);
+
 
         verticalLayout->addLayout(horizontalLayout_3);
 
         MainWindow->setCentralWidget(centralWidget);
+#ifndef QT_NO_SHORTCUT
+        pathLabel->setBuddy(pathLineEdit);
+        trashholdLabel->setBuddy(devesaionSpinBox);
+        colorPeakerLabel->setBuddy(colorPeakerButton);
+        trashHoldSliderMinLabel->setBuddy(trashholSlider);
+        trashholdSliderMaxLabel->setBuddy(trashholSlider);
+#endif // QT_NO_SHORTCUT
 
         retranslateUi(MainWindow);
+
+        colorPeakerButton->setDefault(true);
+
 
         QMetaObject::connectSlotsByName(MainWindow);
     } // setupUi
@@ -178,12 +222,15 @@ public:
         pathLabel->setText(QApplication::translate("MainWindow", "\320\237\321\203\321\202\321\214 \320\272 \320\272\320\260\321\200\321\202\320\270\320\275\320\272\320\265:", Q_NULLPTR));
         pathButton->setText(QApplication::translate("MainWindow", "...", Q_NULLPTR));
         trashholdLabel->setText(QApplication::translate("MainWindow", "\320\237\320\276\321\200\320\276\320\263\320\276\320\262\320\276\320\265 \320\267\320\275\320\260\321\207\320\265\320\275\320\270\320\265 \320\261\320\270\320\275\320\260\321\200\320\270\320\267\320\260\321\206\320\270\320\270:", Q_NULLPTR));
+        findContourButton->setText(QApplication::translate("MainWindow", "Find Contour", Q_NULLPTR));
+        colorPeakerLabel->setText(QApplication::translate("MainWindow", "Color:", Q_NULLPTR));
+        colorPeakerButton->setText(QString());
         imageLabel->setText(QString());
         trashHoldSliderMinLabel->setText(QApplication::translate("MainWindow", "0", Q_NULLPTR));
         trashholdSliderMaxLabel->setText(QApplication::translate("MainWindow", "255", Q_NULLPTR));
         colorRadio->setText(QApplication::translate("MainWindow", "\320\246\320\262\320\265\321\202\320\275\320\276\320\265", Q_NULLPTR));
-        bawDevide3Radio->setText(QApplication::translate("MainWindow", "\320\247\320\221 / 3", Q_NULLPTR));
-        bawFormulaRadio->setText(QApplication::translate("MainWindow", "\320\247\320\221 \321\204\320\276\321\200\320\274\321\203\320\273\320\260", Q_NULLPTR));
+        bawFormulaRadio->setText(QApplication::translate("MainWindow", "B&W", Q_NULLPTR));
+        tresholdRatio->setText(QApplication::translate("MainWindow", "\320\221\320\270\320\275\320\260\321\200\320\270\320\267\320\276\320\262\320\260\320\275\320\275\320\276\320\265", Q_NULLPTR));
     } // retranslateUi
 
 };

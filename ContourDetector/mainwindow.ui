@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>658</width>
-    <height>613</height>
+    <height>594</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -19,11 +19,21 @@
      <layout class="QHBoxLayout" name="horizontalLayout">
       <item>
        <widget class="QLabel" name="pathLabel">
+        <property name="font">
+         <font>
+          <pointsize>10</pointsize>
+          <weight>75</weight>
+          <bold>true</bold>
+         </font>
+        </property>
         <property name="text">
          <string>Путь к картинке:</string>
         </property>
         <property name="alignment">
          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+        </property>
+        <property name="buddy">
+         <cstring>pathLineEdit</cstring>
         </property>
        </widget>
       </item>
@@ -50,8 +60,18 @@
      <layout class="QHBoxLayout" name="horizontalLayout_4">
       <item>
        <widget class="QLabel" name="trashholdLabel">
+        <property name="font">
+         <font>
+          <pointsize>10</pointsize>
+          <weight>75</weight>
+          <bold>true</bold>
+         </font>
+        </property>
         <property name="text">
          <string>Пороговое значение бинаризации:</string>
+        </property>
+        <property name="buddy">
+         <cstring>devesaionSpinBox</cstring>
         </property>
        </widget>
       </item>
@@ -72,7 +92,7 @@
        </widget>
       </item>
       <item>
-       <spacer name="horizontalSpacer">
+       <spacer name="horizontalSpacer_2">
         <property name="orientation">
          <enum>Qt::Horizontal</enum>
         </property>
@@ -84,6 +104,43 @@
         </property>
        </spacer>
       </item>
+      <item>
+       <widget class="QPushButton" name="findContourButton">
+        <property name="text">
+         <string>Find Contour</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLabel" name="colorPeakerLabel">
+        <property name="text">
+         <string>Color:</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+        </property>
+        <property name="buddy">
+         <cstring>colorPeakerButton</cstring>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="colorPeakerButton">
+        <property name="styleSheet">
+         <string notr="true">border: 1px solid black;
+background-color: red;</string>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+        <property name="default">
+         <bool>true</bool>
+        </property>
+        <property name="flat">
+         <bool>false</bool>
+        </property>
+       </widget>
+      </item>
      </layout>
     </item>
     <item>
@@ -94,13 +151,28 @@
         <height>480</height>
        </size>
       </property>
+      <property name="focusPolicy">
+       <enum>Qt::StrongFocus</enum>
+      </property>
+      <property name="autoFillBackground">
+       <bool>false</bool>
+      </property>
       <property name="styleSheet">
        <string notr="true">background: rgb(255, 255, 255);
-border-color: rgb(0, 0, 0);
-border-size: 2px;</string>
+border: 1px solid black;
+padding: 5px;</string>
+      </property>
+      <property name="frameShape">
+       <enum>QFrame::NoFrame</enum>
       </property>
       <property name="text">
        <string/>
+      </property>
+      <property name="scaledContents">
+       <bool>true</bool>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignCenter</set>
       </property>
      </widget>
     </item>
@@ -115,6 +187,9 @@ border-size: 2px;</string>
           </property>
           <property name="alignment">
            <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+          </property>
+          <property name="buddy">
+           <cstring>trashholSlider</cstring>
           </property>
          </widget>
         </item>
@@ -139,6 +214,9 @@ border-size: 2px;</string>
           <property name="text">
            <string>255</string>
           </property>
+          <property name="buddy">
+           <cstring>trashholSlider</cstring>
+          </property>
          </widget>
         </item>
        </layout>
@@ -154,16 +232,16 @@ border-size: 2px;</string>
        </widget>
       </item>
       <item>
-       <widget class="QRadioButton" name="bawDevide3Radio">
+       <widget class="QRadioButton" name="bawFormulaRadio">
         <property name="text">
-         <string>ЧБ / 3</string>
+         <string>B&amp;W</string>
         </property>
        </widget>
       </item>
       <item>
-       <widget class="QRadioButton" name="bawFormulaRadio">
+       <widget class="QRadioButton" name="tresholdRatio">
         <property name="text">
-         <string>ЧБ формула</string>
+         <string>Бинаризованное</string>
         </property>
        </widget>
       </item>
