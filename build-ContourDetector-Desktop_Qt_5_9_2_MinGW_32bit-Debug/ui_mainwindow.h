@@ -52,7 +52,7 @@ public:
     QSlider *trashholSlider;
     QLabel *trashholdSliderMaxLabel;
     QRadioButton *colorRadio;
-    QRadioButton *bawFormulaRadio;
+    QRadioButton *bwRatio;
     QRadioButton *tresholdRatio;
 
     void setupUi(QMainWindow *MainWindow)
@@ -60,6 +60,9 @@ public:
         if (MainWindow->objectName().isEmpty())
             MainWindow->setObjectName(QStringLiteral("MainWindow"));
         MainWindow->resize(658, 594);
+        QIcon icon;
+        icon.addFile(QStringLiteral(":/img/fawicon.ico"), QSize(), QIcon::Normal, QIcon::Off);
+        MainWindow->setWindowIcon(icon);
         centralWidget = new QWidget(MainWindow);
         centralWidget->setObjectName(QStringLiteral("centralWidget"));
         verticalLayout = new QVBoxLayout(centralWidget);
@@ -186,10 +189,10 @@ public:
 
         horizontalLayout_3->addWidget(colorRadio);
 
-        bawFormulaRadio = new QRadioButton(centralWidget);
-        bawFormulaRadio->setObjectName(QStringLiteral("bawFormulaRadio"));
+        bwRatio = new QRadioButton(centralWidget);
+        bwRatio->setObjectName(QStringLiteral("bwRatio"));
 
-        horizontalLayout_3->addWidget(bawFormulaRadio);
+        horizontalLayout_3->addWidget(bwRatio);
 
         tresholdRatio = new QRadioButton(centralWidget);
         tresholdRatio->setObjectName(QStringLiteral("tresholdRatio"));
@@ -218,7 +221,7 @@ public:
 
     void retranslateUi(QMainWindow *MainWindow)
     {
-        MainWindow->setWindowTitle(QApplication::translate("MainWindow", "MainWindow", Q_NULLPTR));
+        MainWindow->setWindowTitle(QApplication::translate("MainWindow", "\320\234\320\265\321\202\320\276\320\264 \320\260\320\272\321\202\320\270\320\262\320\275\321\213\321\205 \320\272\320\276\320\275\321\202\321\203\321\200\320\276\320\262", Q_NULLPTR));
         pathLabel->setText(QApplication::translate("MainWindow", "\320\237\321\203\321\202\321\214 \320\272 \320\272\320\260\321\200\321\202\320\270\320\275\320\272\320\265:", Q_NULLPTR));
         pathButton->setText(QApplication::translate("MainWindow", "...", Q_NULLPTR));
         trashholdLabel->setText(QApplication::translate("MainWindow", "\320\237\320\276\321\200\320\276\320\263\320\276\320\262\320\276\320\265 \320\267\320\275\320\260\321\207\320\265\320\275\320\270\320\265 \320\261\320\270\320\275\320\260\321\200\320\270\320\267\320\260\321\206\320\270\320\270:", Q_NULLPTR));
@@ -229,7 +232,7 @@ public:
         trashHoldSliderMinLabel->setText(QApplication::translate("MainWindow", "0", Q_NULLPTR));
         trashholdSliderMaxLabel->setText(QApplication::translate("MainWindow", "255", Q_NULLPTR));
         colorRadio->setText(QApplication::translate("MainWindow", "\320\246\320\262\320\265\321\202\320\275\320\276\320\265", Q_NULLPTR));
-        bawFormulaRadio->setText(QApplication::translate("MainWindow", "B&W", Q_NULLPTR));
+        bwRatio->setText(QApplication::translate("MainWindow", "B&W", Q_NULLPTR));
         tresholdRatio->setText(QApplication::translate("MainWindow", "\320\221\320\270\320\275\320\260\321\200\320\270\320\267\320\276\320\262\320\260\320\275\320\275\320\276\320\265", Q_NULLPTR));
     } // retranslateUi
 

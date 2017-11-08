@@ -29,7 +29,15 @@ SOURCES += \
 
 HEADERS += \
         mainwindow.h \
-    constants.h
+    const.h
 
 FORMS += \
         mainwindow.ui
+
+RC_FILE += contourdetector.rc
+
+RESOURCES += \
+    source.qrc
+
+DISTFILES += \
+    contourdetector.rc

@@ -11,7 +11,11 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>MainWindow</string>
+   <string>Метод активных контуров</string>
+  </property>
+  <property name="windowIcon">
+   <iconset resource="source.qrc">
+    <normaloff>:/img/fawicon.ico</normaloff>:/img/fawicon.ico</iconset>
   </property>
   <widget class="QWidget" name="centralWidget">
    <layout class="QVBoxLayout" name="verticalLayout">
@@ -232,7 +236,7 @@ padding: 5px;</string>
        </widget>
       </item>
       <item>
-       <widget class="QRadioButton" name="bawFormulaRadio">
+       <widget class="QRadioButton" name="bwRatio">
         <property name="text">
          <string>B&amp;W</string>
         </property>
@@ -251,6 +255,8 @@ padding: 5px;</string>
   </widget>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
- <resources/>
+ <resources>
+  <include location="source.qrc"/>
+ </resources>
  <connections/>
 </ui>

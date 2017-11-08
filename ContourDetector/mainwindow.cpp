@@ -1,6 +1,6 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
-#include "constants.h"
+#include "const.h"
 #include <QFileDialog>
 #include <QFileInfo>
 #include <QDebug>
@@ -10,9 +10,8 @@ MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
 {
+    //BUG: Resizing without Saving Aspect Ratio
     ui->setupUi(this);
-    setWindowTitle("ContourDetector");
-
     showImage(getImagePath());
 
     imgSize = getImageSize(&originalImg);
@@ -24,19 +23,7 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
-void MainWindow::resizeEvent(QResizeEvent *event)
-{
-    //TODO: Picture resizing
-    QMainWindow::resizeEvent(event);
-    int w = ui->imageLabel->width();
-    int h = ui->imageLabel->height();
-    //ui->imageLabel->setPixmap(ui->imageLabel->pixmap()->scaled(w, h, Qt::KeepAspectRatio));
-
-    qDebug() << "Windows width: " << this->width() << "PixMap width: " << ui->imageLabel->pixmap()->size().width() << "Label width: " << ui->imageLabel->width();
-    qDebug() << "---------------";
-}
-
-void MainWindow::savePicture(QPixmap picture, const QString name)
+void MainWindow::savePicture(const QString name)
 {
     //TODO: Save Picture
     QString fullPath = QDir::tempPath() + name;
@@ -52,11 +39,12 @@ void MainWindow::on_pathButton_clicked()
 
 QString MainWindow::getImagePath()
 {
+    //WARNING: Change path to Pictures directory before Proni4ev review
     QString path = QFileDialog::getOpenFileName(
                 this,
-                "Выберите картинку",
-                "C:/Users/Dima/OneDrive/EDUCATION/Research/Molchanov/primery_izobrazheniy_dlya_UIR/",
-                "Images (*.png *.xpm *.bmp)");
+                CHOSE_TITTLE,
+                CHOSE_PATH,
+                CHOSE_FILE_EXT);
     return path;
 }
 
@@ -65,7 +53,6 @@ void MainWindow::showImage(QString path)
     QImage image(path);
     originalImg = image;
     ui->pathLineEdit->setText(path);
-   // ui->imageLabel->setGeometry(0,0,image.size().width(),image.size().height());
     updateImage(&image);
 }
 
@@ -91,9 +78,10 @@ QImage MainWindow::setBW(QImage img)
 
 QImage MainWindow::setTreshold(QImage img, int devisionVal)
 {
-    ui->bawFormulaRadio->setChecked(false);
-    ui->tresholdRatio->setChecked(true);
-    ui->colorRadio->setChecked(false);
+    bool treshold = true;
+    ui->colorRadio->setChecked(!treshold);
+    ui->bwRatio->setChecked(!treshold);
+    ui->tresholdRatio->setChecked(treshold);
 
     for(int i = 0; i < imgSize.width(); i++)
     {
@@ -103,9 +91,9 @@ QImage MainWindow::setTreshold(QImage img, int devisionVal)
             int brightness = getBrightness(color);
 
             if (brightness >= devisionVal)
-                img.setPixel(i, j, qRgb(255, 255, 255));
+                img.setPixel(i, j, RgbColor::white);
             else
-                img.setPixel(i, j, qRgb(0, 0, 0));
+                img.setPixel(i, j, RgbColor::black);
         }
     }
     return img;
@@ -123,15 +111,24 @@ void MainWindow::on_colorRadio_clicked()
     updateImage(&originalImg);
 }
 
-void MainWindow::on_bawFormulaRadio_clicked()
-{
-    updateImage(&bwImg);
-}
-
 int MainWindow::getBrightness(QRgb pixel)
 {
-    int brightness = qRed(pixel)*RED_COEF + qGreen(pixel)*GREEN_COEF + qBlue(pixel)*BLUE_COEF;
+
+    int brightness =
+            qRed(pixel) * (ColorCoeff::R) +
+            qGreen(pixel)* (ColorCoeff::G) +
+            qBlue(pixel) * (ColorCoeff::B);
     return brightness;
+}
+
+QVector<QPoint> MainWindow::findContour(QImage img)
+{
+
+}
+
+QImage MainWindow::paintContour(QVector<QPoint> points)
+{
+
 }
 
 void MainWindow::on_tresholdRatio_clicked()
@@ -150,4 +147,9 @@ void MainWindow::on_colorPeakerButton_clicked()
     QColor contourClr = QColorDialog::getColor(Qt::red, this);
     QString bgStyleSheet = CLR_PCKR_STYLE + contourClr.name();
     ui->colorPeakerButton->setStyleSheet(bgStyleSheet);
+}
+
+void MainWindow::on_bwRatio_clicked()
+{
+    updateImage(&bwImg);
 }

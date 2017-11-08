@@ -14,22 +14,24 @@ class MainWindow : public QMainWindow
 public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
-    void resizeEvent(QResizeEvent* event);
-    void savePicture(QPixmap picture, const QString name);
+    void savePicture(const QString name);
 
 private slots:
     void on_pathButton_clicked();
     void on_trashholSlider_sliderMoved(int position);
     void on_colorRadio_clicked();
-    void on_bawFormulaRadio_clicked();
     void on_tresholdRatio_clicked();
     void on_findContourButton_clicked();
     void on_colorPeakerButton_clicked();
+
+    void on_bwRatio_clicked();
 
 private:
     Ui::MainWindow *ui;
 
     int getBrightness(QRgb pixel);
+    QImage paintContour(QVector<QPoint> points);
+    QVector<QPoint> findContour(QImage img);
 
     QImage originalImg;
     QImage tresholdedImg;
