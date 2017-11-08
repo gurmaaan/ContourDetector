@@ -1,5 +1,6 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
+#include "constants.h"
 #include <QFileDialog>
 #include <QFileInfo>
 #include <QDebug>
@@ -11,6 +12,9 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->setupUi(this);
     setWindowTitle("ContourDetector");
     showImage(getImagePath());
+    imgSize = getImageSize(&originalImg);
+    BandWImgDevide3 = convertBandWDevide3(originalImg);
+    BandWImgFormula = convertBandWFormula(originalImg);
 }
 
 MainWindow::~MainWindow()
@@ -43,38 +47,88 @@ QString MainWindow::getImagePath()
 void MainWindow::showImage(QString path)
 {
     QImage image(path);
-    img = image;
+    originalImg = image;
     ui->pathLineEdit->setText(path);
-    ui->imageLabel->setPixmap(QPixmap::fromImage(img));
+    ui->imageLabel->setPixmap(QPixmap::fromImage(originalImg));
 }
 
-void MainWindow::convertBandW(QImage *img)
+void MainWindow::updateImage(QImage *img)
 {
-    QSize sizeImage = img->size();
-    int width = sizeImage.width(), height = sizeImage.height();
+    ui->imageLabel->setPixmap(QPixmap::fromImage(*img));
+}
 
-   // QRgb color;
-    int value;
-
-    for (int i=0; i < width; i++)
+QImage MainWindow::convertBandWDevide3(QImage img)
+{
+    for (int i=0; i < imgSize.width(); i++)
     {
-       for (int j=0; j < height; j++)
+       for (int j=0; j < imgSize.height(); j++)
        {
-           //QColor *color = new QColor();
-           QRgb color = img->pixel(i, j);
+           QRgb color = img.pixel(i, j);
            int gray = (qRed(color) + qGreen(color) + qBlue(color))/3;
-           img->setPixel(i, j, qRgb(gray, gray, gray));
+           img.setPixel(i, j, qRgb(gray, gray, gray));
        }
     }
-    ui->imageLabel->setPixmap(QPixmap::fromImage(*img));
+    return img;
+}
+
+QImage MainWindow::convertBandWFormula(QImage img)
+{
+    for (int i=0; i < imgSize.width(); i++)
+    {
+       for (int j=0; j < imgSize.height(); j++)
+       {
+           QRgb color = img.pixel(i, j);
+           int gray = getBrightness(qRed(color), qGreen(color), qBlue(color));
+           img.setPixel(i, j, qRgb(gray, gray, gray));
+       }
+    }
+    return img;
+}
+
+void MainWindow::setTreshold(QImage img, int devisionVal)
+{
+    ui->bawFormulaRadio->setChecked(true);
+    ui->bawDevide3Radio->setChecked(false);
+    ui->colorRadio->setChecked(false);
+
+    for(int i = 0; i < imgSize.width(); i++)
+    {
+        for(int j = 0; j < imgSize.height(); j++)
+        {
+            QRgb color = img.pixel(i, j);
+            int brightness = getBrightness(qRed(color), qGreen(color), qBlue(color));
+
+            if (brightness >= devisionVal)
+                img.setPixel(i, j, qRgb(255, 255, 255));
+            else
+                img.setPixel(i, j, qRgb(0, 0, 0));
+        }
+    }
+    updateImage(&img);
 }
 
 void MainWindow::on_trashholSlider_sliderMoved(int position)
 {
-    qDebug() << position;
+    ui->devesaionSpinBox->setValue(position);
+   setTreshold(BandWImgFormula, position);
 }
 
-void MainWindow::on_blackAndWhiteButton_clicked()
+void MainWindow::on_colorRadio_clicked()
 {
-    convertBandW(&img);
+    updateImage(&originalImg);
+}
+
+void MainWindow::on_bawDevide3Radio_clicked()
+{
+    updateImage(&BandWImgDevide3);
+}
+
+void MainWindow::on_bawFormulaRadio_clicked()
+{
+    updateImage(&BandWImgFormula);
+}
+
+int MainWindow::getBrightness(int red, int green, int blue)
+{
+    return red * RED_COEF + green * GREEN_COEF + blue * BLUE_COEF;
 }
