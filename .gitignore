@@ -2,17 +2,5 @@
 
 *.user
 *.creator.user*
-/build-?
-
-/build-?*
-/build-ContourDetector-Desktop_Qt_5_9_2_MinGW_32bit-Debug/debug/contourdetector_res.o
-/build-ContourDetector-Desktop_Qt_5_9_2_MinGW_32bit-Debug/debug/main.o
-/build-ContourDetector-Desktop_Qt_5_9_2_MinGW_32bit-Debug/debug/mainwindow.o
-/build-ContourDetector-Desktop_Qt_5_9_2_MinGW_32bit-Debug/debug/moc_mainwindow.cpp
-/build-ContourDetector-Desktop_Qt_5_9_2_MinGW_32bit-Debug/debug/moc_mainwindow.o
-/build-ContourDetector-Desktop_Qt_5_9_2_MinGW_32bit-Debug/debug/moc_predefs.h
-/build-ContourDetector-Desktop_Qt_5_9_2_MinGW_32bit-Debug/debug/qrc_source.cpp
-/build-ContourDetector-Desktop_Qt_5_9_2_MinGW_32bit-Debug/debug/qrc_source.o
-/build-ContourDetector-Desktop_Qt_5_9_2_MinGW_32bit-Debug/Makefile.Debug
-/build-ContourDetector-Desktop_Qt_5_9_2_MinGW_32bit-Debug/Makefile.Release
-/build-ContourDetector-Desktop_Qt_5_9_2_MinGW_32bit-Debug/ui_mainwindow.h
+/build-?/*
+/cmake-build-debug/
