@@ -39,7 +39,8 @@ HEADERS += \
 FORMS += \
         mainwindow.ui
 
-RC_FILE += contourdetector.rc
+RC_FILE += \
+        contourdetector.rc
 
 RESOURCES += \
     source.qrc

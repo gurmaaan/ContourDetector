@@ -1,27 +1,7 @@
 <RCC>
     <qresource prefix="/icons">
-        <file>fawicon.ico</file>
         <file>icon.png</file>
-    </qresource>
-    <qresource prefix="/">
-        <file>TestImages/BMP_BoneMarrow_1915-1094.bmp</file>
-        <file>TestImages/BMP_BoneMarrow_1920-1090.bmp</file>
-        <file>TestImages/BMP_CytoPrep_720-576_dark.bmp</file>
-        <file>TestImages/BMP_CytoPrep_720-576_green.bmp</file>
-        <file>TestImages/BMP_CytoPrep_720-576_light.bmp</file>
-        <file>TestImages/BMP_CytoPrep_720-576_purple.bmp</file>
-        <file>TestImages/BMP_CytoPrep_720-576_red.bmp</file>
-        <file>TestImages/BMP_CytoPrep_720-576_white.bmp</file>
-        <file>TestImages/BMP_Leucocyte_1901-1089.bmp</file>
-        <file>TestImages/BMP_Leucocyte_1917-1089.bmp</file>
-        <file>TestImages/BMP_Lymphoma_1920-1095.bmp</file>
-        <file>TestImages/JPG_HistoPrep_1079-789-767.tif</file>
-        <file>TestImages/JPG_HistoPrep_1103-855.jpg</file>
-        <file>TestImages/JPG_HistoPrep_1161-767.jpg</file>
-        <file>TestImages/JPG_HistoPrep_1169-721.jpg</file>
-        <file>TestImages/JPG_HistoPrep_1171-721.jpg</file>
-        <file>TestImages/JPG_HistoPrep_1672-1047.jpg</file>
-        <file>TestImages/TIF_HistoPrep_6700x4529.tif</file>
+        <file>fawicon.ico</file>
     </qresource>
     <qresource prefix="/other">
         <file>contourdetector.rc</file>
