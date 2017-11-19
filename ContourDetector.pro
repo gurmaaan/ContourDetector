@@ -1,6 +1,6 @@
 #-------------------------------------------------
 #
-# Project created by QtCreator 2017-11-08T10:03:46
+# Project created by QtCreator 2017-11-15T21:33:54
 #
 #-------------------------------------------------
 
@@ -25,22 +25,20 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += \
         main.cpp \
-        img.cpp \
-        imgproc.cpp \
-        mainwindow.cpp
-
+        mainwindow.cpp \
+        img.cpp
 
 HEADERS += \
         mainwindow.h \
         const.h \
-        imgproc.h \
         img.h
 
 FORMS += \
-        mainwindow.ui
+    mainwindow.ui
 
 RC_FILE += \
-        contourdetector.rc
+    contourdetector.rc
 
 RESOURCES += \
     source.qrc
+

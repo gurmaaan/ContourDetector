@@ -6,53 +6,50 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>658</width>
-    <height>613</height>
+    <width>910</width>
+    <height>672</height>
    </rect>
   </property>
+  <property name="font">
+   <font>
+    <family>Calibri Light</family>
+    <pointsize>12</pointsize>
+   </font>
+  </property>
+  <property name="contextMenuPolicy">
+   <enum>Qt::NoContextMenu</enum>
+  </property>
   <property name="windowTitle">
-   <string>Метод активных контуров</string>
+   <string>Метод Активных Контуров</string>
   </property>
   <property name="windowIcon">
    <iconset resource="source.qrc">
-    <normaloff>:/icons/fawicon.ico</normaloff>:/icons/fawicon.ico</iconset>
+    <normaloff>:/fawicon.ico</normaloff>:/fawicon.ico</iconset>
   </property>
-  <widget class="QWidget" name="centralWidget">
-   <layout class="QVBoxLayout" name="verticalLayout">
+  <property name="statusTip">
+   <string>Готово</string>
+  </property>
+  <property name="toolButtonStyle">
+   <enum>Qt::ToolButtonTextUnderIcon</enum>
+  </property>
+  <property name="documentMode">
+   <bool>true</bool>
+  </property>
+  <property name="dockOptions">
+   <set>QMainWindow::AllowNestedDocks|QMainWindow::AnimatedDocks</set>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <layout class="QVBoxLayout" name="verticalLayout_7">
     <item>
-     <layout class="QHBoxLayout" name="horizontalLayout">
+     <layout class="QHBoxLayout" name="pathHL">
+      <property name="sizeConstraint">
+       <enum>QLayout::SetFixedSize</enum>
+      </property>
       <item>
-       <widget class="QLabel" name="pathLabel">
-        <property name="font">
-         <font>
-          <pointsize>10</pointsize>
-          <weight>75</weight>
-          <bold>true</bold>
-         </font>
-        </property>
-        <property name="text">
-         <string>Путь к картинке:</string>
-        </property>
-        <property name="alignment">
-         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-        </property>
-        <property name="buddy">
-         <cstring>pathLineEdit</cstring>
-        </property>
-       </widget>
+       <widget class="QLineEdit" name="pathLE"/>
       </item>
       <item>
-       <widget class="QLineEdit" name="pathLineEdit">
-        <property name="minimumSize">
-         <size>
-          <width>300</width>
-          <height>0</height>
-         </size>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QToolButton" name="pathButton">
+       <widget class="QToolButton" name="pathTB">
         <property name="text">
          <string>...</string>
         </property>
@@ -61,185 +58,349 @@
      </layout>
     </item>
     <item>
-     <layout class="QHBoxLayout" name="horizontalLayout_4">
-      <item>
-       <widget class="QLabel" name="trashholdLabel">
-        <property name="font">
-         <font>
-          <pointsize>10</pointsize>
-          <weight>75</weight>
-          <bold>true</bold>
-         </font>
-        </property>
-        <property name="text">
-         <string>Пороговое значение бинаризации:</string>
-        </property>
-        <property name="buddy">
-         <cstring>devesaionSpinBox</cstring>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QSpinBox" name="devesaionSpinBox">
-        <property name="minimumSize">
-         <size>
-          <width>100</width>
-          <height>0</height>
-         </size>
-        </property>
-        <property name="buttonSymbols">
-         <enum>QAbstractSpinBox::NoButtons</enum>
-        </property>
-        <property name="maximum">
-         <number>255</number>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <spacer name="horizontalSpacer_2">
-        <property name="orientation">
-         <enum>Qt::Horizontal</enum>
-        </property>
-        <property name="sizeHint" stdset="0">
-         <size>
-          <width>40</width>
-          <height>20</height>
-         </size>
-        </property>
-       </spacer>
-      </item>
-      <item>
-       <widget class="Line" name="line">
-        <property name="orientation">
-         <enum>Qt::Vertical</enum>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QLabel" name="contourLabel">
-        <property name="font">
-         <font>
-          <weight>75</weight>
-          <bold>true</bold>
-         </font>
-        </property>
-        <property name="text">
-         <string>Контур:</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QLabel" name="colorPeakerLabel">
-        <property name="text">
-         <string>Цвет:</string>
-        </property>
-        <property name="alignment">
-         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-        </property>
-        <property name="buddy">
-         <cstring>colorPeakerButton</cstring>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QPushButton" name="colorPeakerButton">
-        <property name="styleSheet">
-         <string notr="true">border: 1px solid black;
-background-color: red;</string>
-        </property>
-        <property name="text">
-         <string/>
-        </property>
-        <property name="default">
-         <bool>true</bool>
-        </property>
-        <property name="flat">
-         <bool>false</bool>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QSpinBox" name="contourSizeSpin">
-        <property name="suffix">
-         <string> px</string>
-        </property>
-        <property name="maximum">
-         <number>10</number>
-        </property>
-        <property name="value">
-         <number>5</number>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QCheckBox" name="contourCheckBox">
-        <property name="text">
-         <string>Отобразить</string>
-        </property>
-       </widget>
-      </item>
-     </layout>
-    </item>
-    <item>
-     <widget class="QLabel" name="imageLabel">
+     <widget class="QScrollArea" name="scrolArea">
       <property name="minimumSize">
        <size>
-        <width>640</width>
-        <height>480</height>
+        <width>670</width>
+        <height>510</height>
        </size>
       </property>
-      <property name="focusPolicy">
-       <enum>Qt::StrongFocus</enum>
-      </property>
-      <property name="autoFillBackground">
-       <bool>false</bool>
-      </property>
-      <property name="styleSheet">
-       <string notr="true">background: rgb(255, 255, 255);
-border: 1px solid black;
-padding: 5px;</string>
-      </property>
-      <property name="frameShape">
-       <enum>QFrame::NoFrame</enum>
-      </property>
-      <property name="text">
-       <string/>
-      </property>
-      <property name="scaledContents">
+      <property name="widgetResizable">
        <bool>true</bool>
       </property>
-      <property name="alignment">
-       <set>Qt::AlignCenter</set>
-      </property>
-     </widget>
-    </item>
-    <item>
-     <layout class="QHBoxLayout" name="horizontalLayout_3">
-      <item>
-       <layout class="QHBoxLayout" name="horizontalLayout_2">
+      <widget class="QWidget" name="scrollAreaWidgetContents">
+       <property name="geometry">
+        <rect>
+         <x>0</x>
+         <y>0</y>
+         <width>668</width>
+         <height>508</height>
+        </rect>
+       </property>
+       <layout class="QVBoxLayout" name="verticalLayout_6">
         <item>
-         <widget class="QLabel" name="trashHoldSliderMinLabel">
+         <widget class="QLabel" name="imageLabel">
+          <property name="minimumSize">
+           <size>
+            <width>640</width>
+            <height>480</height>
+           </size>
+          </property>
+          <property name="styleSheet">
+           <string notr="true">background : rgb(255, 255, 255);</string>
+          </property>
           <property name="text">
-           <string>0</string>
+           <string/>
           </property>
           <property name="alignment">
-           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-          </property>
-          <property name="buddy">
-           <cstring>trashholSlider</cstring>
+           <set>Qt::AlignCenter</set>
           </property>
          </widget>
         </item>
+       </layout>
+      </widget>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QMenuBar" name="menubar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>910</width>
+     <height>25</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <family>Calibri Light</family>
+     <pointsize>12</pointsize>
+    </font>
+   </property>
+   <widget class="QMenu" name="fileMenu">
+    <property name="title">
+     <string>&amp;Файл</string>
+    </property>
+    <property name="separatorsCollapsible">
+     <bool>true</bool>
+    </property>
+    <property name="toolTipsVisible">
+     <bool>true</bool>
+    </property>
+    <addaction name="openAct"/>
+    <addaction name="separator"/>
+    <addaction name="saveAct"/>
+    <addaction name="saveAsAct"/>
+    <addaction name="separator"/>
+    <addaction name="closeAct"/>
+    <addaction name="separator"/>
+    <addaction name="exitActr"/>
+   </widget>
+   <widget class="QMenu" name="menu_view">
+    <property name="title">
+     <string>&amp;Вид</string>
+    </property>
+    <addaction name="normalScreenAct"/>
+    <addaction name="fullScreenAct"/>
+    <addaction name="separator"/>
+    <addaction name="clrImgAc"/>
+    <addaction name="bwImgAct"/>
+    <addaction name="trImgAct"/>
+   </widget>
+   <widget class="QMenu" name="contourMenu">
+    <property name="title">
+     <string>&amp;Контур</string>
+    </property>
+   </widget>
+   <widget class="QMenu" name="tresholdMenu">
+    <property name="title">
+     <string>Бинаризация</string>
+    </property>
+    <addaction name="trLevelAutoAct"/>
+   </widget>
+   <addaction name="fileMenu"/>
+   <addaction name="menu_view"/>
+   <addaction name="contourMenu"/>
+   <addaction name="tresholdMenu"/>
+  </widget>
+  <widget class="QToolBar" name="toolBar">
+   <property name="font">
+    <font>
+     <pointsize>8</pointsize>
+    </font>
+   </property>
+   <property name="contextMenuPolicy">
+    <enum>Qt::NoContextMenu</enum>
+   </property>
+   <property name="windowTitle">
+    <string>Инструменты</string>
+   </property>
+   <property name="movable">
+    <bool>false</bool>
+   </property>
+   <property name="allowedAreas">
+    <set>Qt::TopToolBarArea</set>
+   </property>
+   <property name="orientation">
+    <enum>Qt::Horizontal</enum>
+   </property>
+   <property name="iconSize">
+    <size>
+     <width>40</width>
+     <height>40</height>
+    </size>
+   </property>
+   <attribute name="toolBarArea">
+    <enum>TopToolBarArea</enum>
+   </attribute>
+   <attribute name="toolBarBreak">
+    <bool>false</bool>
+   </attribute>
+   <addaction name="openAct"/>
+   <addaction name="separator"/>
+   <addaction name="saveAct"/>
+   <addaction name="separator"/>
+   <addaction name="saveAsAct"/>
+   <addaction name="closeAct"/>
+   <addaction name="separator"/>
+   <addaction name="exitActr"/>
+  </widget>
+  <widget class="QStatusBar" name="statusBar"/>
+  <widget class="QDockWidget" name="dockWidgetLeft">
+   <property name="sizePolicy">
+    <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+     <horstretch>0</horstretch>
+     <verstretch>0</verstretch>
+    </sizepolicy>
+   </property>
+   <property name="minimumSize">
+    <size>
+     <width>200</width>
+     <height>177</height>
+    </size>
+   </property>
+   <property name="contextMenuPolicy">
+    <enum>Qt::NoContextMenu</enum>
+   </property>
+   <property name="features">
+    <set>QDockWidget::DockWidgetFloatable|QDockWidget::DockWidgetMovable</set>
+   </property>
+   <property name="allowedAreas">
+    <set>Qt::LeftDockWidgetArea</set>
+   </property>
+   <property name="windowTitle">
+    <string>Отображение</string>
+   </property>
+   <attribute name="dockWidgetArea">
+    <number>1</number>
+   </attribute>
+   <widget class="QWidget" name="dockWidgetContents">
+    <layout class="QVBoxLayout" name="verticalLayout_5">
+     <item>
+      <widget class="QCommandLinkButton" name="clrImgCommand">
+       <property name="text">
+        <string>Цветное</string>
+       </property>
+       <property name="icon">
+        <iconset resource="source.qrc">
+         <normaloff>:/icons/imgClrIc.png</normaloff>:/icons/imgClrIc.png</iconset>
+       </property>
+       <property name="iconSize">
+        <size>
+         <width>30</width>
+         <height>30</height>
+        </size>
+       </property>
+       <property name="checkable">
+        <bool>true</bool>
+       </property>
+       <property name="checked">
+        <bool>true</bool>
+       </property>
+       <property name="autoRepeat">
+        <bool>false</bool>
+       </property>
+       <property name="autoExclusive">
+        <bool>true</bool>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QCommandLinkButton" name="bwImgCommand">
+       <property name="contextMenuPolicy">
+        <enum>Qt::NoContextMenu</enum>
+       </property>
+       <property name="text">
+        <string>Черно белое</string>
+       </property>
+       <property name="icon">
+        <iconset resource="source.qrc">
+         <normaloff>:/icons/imgBwIc.png</normaloff>:/icons/imgBwIc.png</iconset>
+       </property>
+       <property name="iconSize">
+        <size>
+         <width>30</width>
+         <height>30</height>
+        </size>
+       </property>
+       <property name="checkable">
+        <bool>true</bool>
+       </property>
+       <property name="autoExclusive">
+        <bool>true</bool>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QCommandLinkButton" name="trImgCommand">
+       <property name="text">
+        <string>Бинаризованное</string>
+       </property>
+       <property name="icon">
+        <iconset resource="source.qrc">
+         <normaloff>:/icons/imgTrIc.png</normaloff>:/icons/imgTrIc.png</iconset>
+       </property>
+       <property name="iconSize">
+        <size>
+         <width>30</width>
+         <height>30</height>
+        </size>
+       </property>
+       <property name="checkable">
+        <bool>true</bool>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </widget>
+  </widget>
+  <widget class="QDockWidget" name="dockWidget_5">
+   <property name="features">
+    <set>QDockWidget::DockWidgetFloatable|QDockWidget::DockWidgetMovable</set>
+   </property>
+   <property name="allowedAreas">
+    <set>Qt::LeftDockWidgetArea</set>
+   </property>
+   <property name="windowTitle">
+    <string>Бинаризация</string>
+   </property>
+   <attribute name="dockWidgetArea">
+    <number>1</number>
+   </attribute>
+   <widget class="QWidget" name="dockWidgetContents_5">
+    <layout class="QVBoxLayout" name="verticalLayout_4">
+     <item>
+      <layout class="QHBoxLayout" name="horizontalLayout_3">
+       <item>
+        <spacer name="horizontalSpacer_4">
+         <property name="orientation">
+          <enum>Qt::Horizontal</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>40</width>
+           <height>20</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+       <item>
+        <widget class="QLabel" name="trLevelLabel">
+         <property name="text">
+          <string>Порог яркости:</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+         </property>
+         <property name="buddy">
+          <cstring>trLevelSB</cstring>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QSpinBox" name="trLevelSB">
+         <property name="alignment">
+          <set>Qt::AlignCenter</set>
+         </property>
+         <property name="buttonSymbols">
+          <enum>QAbstractSpinBox::NoButtons</enum>
+         </property>
+         <property name="maximum">
+          <number>255</number>
+         </property>
+         <property name="value">
+          <number>0</number>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </item>
+     <item>
+      <widget class="QGroupBox" name="trManualGB">
+       <property name="title">
+        <string>Ручной режим</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignCenter</set>
+       </property>
+       <property name="checkable">
+        <bool>true</bool>
+       </property>
+       <property name="checked">
+        <bool>false</bool>
+       </property>
+       <layout class="QVBoxLayout" name="verticalLayout_3">
         <item>
-         <widget class="QSlider" name="trashholSlider">
+         <widget class="QSlider" name="tresholdSlider">
           <property name="maximum">
            <number>255</number>
           </property>
+          <property name="pageStep">
+           <number>10</number>
+          </property>
           <property name="orientation">
            <enum>Qt::Horizontal</enum>
-          </property>
-          <property name="invertedAppearance">
-           <bool>false</bool>
           </property>
           <property name="tickPosition">
            <enum>QSlider::TicksBelow</enum>
@@ -247,49 +408,401 @@ padding: 5px;</string>
          </widget>
         </item>
         <item>
-         <widget class="QLabel" name="trashholdSliderMaxLabel">
-          <property name="text">
-           <string>255</string>
-          </property>
-          <property name="buddy">
-           <cstring>trashholSlider</cstring>
-          </property>
-         </widget>
+         <layout class="QHBoxLayout" name="horizontalLayout_4">
+          <item>
+           <widget class="QLabel" name="trMinValL">
+            <property name="text">
+             <string>0</string>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignCenter</set>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <spacer name="horizontalSpacer">
+            <property name="orientation">
+             <enum>Qt::Horizontal</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>40</width>
+              <height>20</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+          <item>
+           <widget class="QLabel" name="trMaxValL">
+            <property name="text">
+             <string>255</string>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignCenter</set>
+            </property>
+           </widget>
+          </item>
+         </layout>
         </item>
        </layout>
-      </item>
-      <item>
-       <widget class="QRadioButton" name="colorRadio">
-        <property name="text">
-         <string>Цветное</string>
-        </property>
-        <property name="checked">
-         <bool>true</bool>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QRadioButton" name="bwRatio">
-        <property name="text">
-         <string>B&amp;W</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QRadioButton" name="tresholdRatio">
-        <property name="text">
-         <string>Бинаризованное</string>
-        </property>
-       </widget>
-      </item>
-     </layout>
-    </item>
-   </layout>
+      </widget>
+     </item>
+    </layout>
+   </widget>
   </widget>
+  <widget class="QDockWidget" name="dockWidget_4">
+   <property name="floating">
+    <bool>false</bool>
+   </property>
+   <property name="features">
+    <set>QDockWidget::DockWidgetFloatable|QDockWidget::DockWidgetMovable</set>
+   </property>
+   <property name="allowedAreas">
+    <set>Qt::LeftDockWidgetArea</set>
+   </property>
+   <property name="windowTitle">
+    <string>Контур</string>
+   </property>
+   <attribute name="dockWidgetArea">
+    <number>1</number>
+   </attribute>
+   <widget class="QWidget" name="dockWidgetContents_4">
+    <layout class="QVBoxLayout" name="verticalLayout_2">
+     <item>
+      <widget class="QGroupBox" name="contourGB">
+       <property name="title">
+        <string>Отображать</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignCenter</set>
+       </property>
+       <property name="checkable">
+        <bool>true</bool>
+       </property>
+       <property name="checked">
+        <bool>false</bool>
+       </property>
+       <layout class="QVBoxLayout" name="verticalLayout">
+        <item>
+         <layout class="QHBoxLayout" name="horizontalLayout">
+          <item>
+           <spacer name="horizontalSpacer_2">
+            <property name="orientation">
+             <enum>Qt::Horizontal</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>40</width>
+              <height>20</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+          <item>
+           <widget class="QLabel" name="colorLabel">
+            <property name="text">
+             <string>Цвет:</string>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+            </property>
+            <property name="buddy">
+             <cstring>colorBtn</cstring>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="colorBtn">
+            <property name="enabled">
+             <bool>false</bool>
+            </property>
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Minimum" vsizetype="Maximum">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="styleSheet">
+             <string notr="true">border: 1px solid black;
+background-color: rgb(255, 102, 136);</string>
+            </property>
+            <property name="text">
+             <string/>
+            </property>
+            <property name="flat">
+             <bool>true</bool>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </item>
+        <item>
+         <layout class="QHBoxLayout" name="horizontalLayout_2">
+          <item>
+           <spacer name="horizontalSpacer_3">
+            <property name="orientation">
+             <enum>Qt::Horizontal</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>40</width>
+              <height>20</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+          <item>
+           <widget class="QLabel" name="contSizeLabel">
+            <property name="text">
+             <string>Размер:</string>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+            </property>
+            <property name="buddy">
+             <cstring>contSizeSpin</cstring>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QSpinBox" name="contSizeSpin">
+            <property name="minimumSize">
+             <size>
+              <width>70</width>
+              <height>0</height>
+             </size>
+            </property>
+            <property name="suffix">
+             <string> px</string>
+            </property>
+            <property name="value">
+             <number>2</number>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </item>
+        <item>
+         <spacer name="verticalSpacer">
+          <property name="orientation">
+           <enum>Qt::Vertical</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>20</width>
+            <height>40</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+       </layout>
+      </widget>
+     </item>
+    </layout>
+   </widget>
+  </widget>
+  <action name="openAct">
+   <property name="icon">
+    <iconset resource="source.qrc">
+     <normaloff>:/icons/openIc.png</normaloff>:/icons/openIc.png</iconset>
+   </property>
+   <property name="text">
+    <string>&amp;Открыть</string>
+   </property>
+   <property name="toolTip">
+    <string>Открыть картинку для вывода на экран</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+O</string>
+   </property>
+   <property name="menuRole">
+    <enum>QAction::AboutQtRole</enum>
+   </property>
+  </action>
+  <action name="saveAct">
+   <property name="icon">
+    <iconset resource="source.qrc">
+     <normaloff>:/icons/saveIc.png</normaloff>:/icons/saveIc.png</iconset>
+   </property>
+   <property name="text">
+    <string>&amp;Сохранить</string>
+   </property>
+   <property name="toolTip">
+    <string>Сохранить исходное изображение</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+S</string>
+   </property>
+  </action>
+  <action name="saveAsAct">
+   <property name="icon">
+    <iconset resource="source.qrc">
+     <normaloff>:/icons/saveAsIc.png</normaloff>:/icons/saveAsIc.png</iconset>
+   </property>
+   <property name="text">
+    <string>Сохранить &amp;как...</string>
+   </property>
+   <property name="toolTip">
+    <string>Сохранить как новую картинку</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+Shift+S</string>
+   </property>
+  </action>
+  <action name="closeAct">
+   <property name="icon">
+    <iconset resource="source.qrc">
+     <normaloff>:/icons/closeIc.png</normaloff>:/icons/closeIc.png</iconset>
+   </property>
+   <property name="text">
+    <string>&amp;Закрыть</string>
+   </property>
+   <property name="toolTip">
+    <string>Закрыть картинку</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+W</string>
+   </property>
+  </action>
+  <action name="exitActr">
+   <property name="icon">
+    <iconset resource="source.qrc">
+     <normaloff>:/icons/exitIc.png</normaloff>:/icons/exitIc.png</iconset>
+   </property>
+   <property name="text">
+    <string>&amp;Выход</string>
+   </property>
+   <property name="toolTip">
+    <string>Выход ищз программы </string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+Q</string>
+   </property>
+  </action>
+  <action name="normalScreenAct">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="source.qrc">
+     <normaloff>:/icons/normalScreenIc.png</normaloff>:/icons/normalScreenIc.png</iconset>
+   </property>
+   <property name="text">
+    <string>Обычный режим</string>
+   </property>
+   <property name="toolTip">
+    <string>Вернуться в обычный режим</string>
+   </property>
+  </action>
+  <action name="fullScreenAct">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="source.qrc">
+     <normaloff>:/icons/fullScreenIc.png</normaloff>:/icons/fullScreenIc.png</iconset>
+   </property>
+   <property name="text">
+    <string>Полноэкранный режим</string>
+   </property>
+   <property name="toolTip">
+    <string>Отобразить приложение во весь экран</string>
+   </property>
+   <property name="shortcut">
+    <string>F11</string>
+   </property>
+  </action>
+  <action name="clrImgAc">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="source.qrc">
+     <normaloff>:/icons/imgClrIc.png</normaloff>:/icons/imgClrIc.png</iconset>
+   </property>
+   <property name="text">
+    <string>Цветное изображение</string>
+   </property>
+   <property name="toolTip">
+    <string>Отобразить цветную версию изображения</string>
+   </property>
+  </action>
+  <action name="bwImgAct">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="source.qrc">
+     <normaloff>:/icons/imgBwIc.png</normaloff>:/icons/imgBwIc.png</iconset>
+   </property>
+   <property name="text">
+    <string>Черно белое</string>
+   </property>
+   <property name="toolTip">
+    <string>Отобразить черно белую версию изображения</string>
+   </property>
+  </action>
+  <action name="trImgAct">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="source.qrc">
+     <normaloff>:/icons/imgTrIc.png</normaloff>:/icons/imgTrIc.png</iconset>
+   </property>
+   <property name="text">
+    <string>Бинаризованное</string>
+   </property>
+   <property name="toolTip">
+    <string>Отобразить биноризованное изображение с указаным порогом</string>
+   </property>
+  </action>
+  <action name="trLevelAutoAct">
+   <property name="icon">
+    <iconset resource="source.qrc">
+     <normaloff>:/icons/trLevelAutoImg.png</normaloff>:/icons/trLevelAutoImg.png</iconset>
+   </property>
+   <property name="text">
+    <string>Автоматический порог</string>
+   </property>
+   <property name="toolTip">
+    <string>Порог бинаризации определяется автоматически</string>
+   </property>
+  </action>
  </widget>
- <layoutdefault spacing="6" margin="11"/>
+ <tabstops>
+  <tabstop>pathLE</tabstop>
+  <tabstop>pathTB</tabstop>
+  <tabstop>scrolArea</tabstop>
+  <tabstop>clrImgCommand</tabstop>
+  <tabstop>bwImgCommand</tabstop>
+  <tabstop>trImgCommand</tabstop>
+  <tabstop>trLevelSB</tabstop>
+  <tabstop>trManualGB</tabstop>
+  <tabstop>tresholdSlider</tabstop>
+  <tabstop>contourGB</tabstop>
+  <tabstop>colorBtn</tabstop>
+  <tabstop>contSizeSpin</tabstop>
+ </tabstops>
  <resources>
   <include location="source.qrc"/>
  </resources>
- <connections/>
+ <connections>
+  <connection>
+   <sender>tresholdSlider</sender>
+   <signal>actionTriggered(int)</signal>
+   <receiver>trLevelSB</receiver>
+   <slot>setValue(int)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>26</x>
+     <y>421</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>183</x>
+     <y>351</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
 </ui>

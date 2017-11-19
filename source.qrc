@@ -1,9 +1,17 @@
 <RCC>
-    <qresource prefix="/icons">
-        <file>icon.png</file>
+    <qresource prefix="/">
         <file>fawicon.ico</file>
-    </qresource>
-    <qresource prefix="/other">
-        <file>contourdetector.rc</file>
+        <file>icon.png</file>
+        <file>icons/closeIc.png</file>
+        <file>icons/exitIc.png</file>
+        <file>icons/imgBwIc.png</file>
+        <file>icons/imgClrIc.png</file>
+        <file>icons/imgTrIc.png</file>
+        <file>icons/openIc.png</file>
+        <file>icons/saveAsIc.png</file>
+        <file>icons/saveIc.png</file>
+        <file>icons/normalScreenIc.png</file>
+        <file>icons/fullScreenIc.png</file>
+        <file>icons/trLevelAutoImg.png</file>
     </qresource>
 </RCC>
