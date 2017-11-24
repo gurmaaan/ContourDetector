@@ -1,11 +1,6 @@
 #ifndef CNST_H
 #define CNST_H
 
-//Константы формулы яркости I = 0,2125R + 0,7154G + 0,0721B
-#define RED_RATIO 0.2125
-#define GREEN_RATIO 0.7154
-#define BLUE_RATIO 0.0721
-
 //Коэфициент размера окна программы относительно размер экрана
 #define SCREEN_SCALE 0.75
 
@@ -47,7 +42,7 @@
 
     //Путь
 // WARNING:: Chenge before Proni
-#define OPEN_PATH_DEFAULT "C:/Users/Dima/OneDrive/EDUCATION/Research/Molchanov/ContourDetector/TestImages/"
+#define OPEN_PATH_DEFAULT "%HOMEPATH%YandexDisk/EDUCATION/Research/Molchanov/ContourDetector/TestImages/"
 
 #include <QObject>
 #include <QMetaClassInfo>

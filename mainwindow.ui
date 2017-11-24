@@ -259,7 +259,7 @@
    <attribute name="dockWidgetArea">
     <number>1</number>
    </attribute>
-   <widget class="QWidget" name="dockWidgetContents">
+   <widget class="QWidget" name="imageViewDockContent">
     <layout class="QVBoxLayout" name="verticalLayout_5">
      <item alignment="Qt::AlignVCenter">
       <widget class="QCommandLinkButton" name="clrImgCommand">
@@ -368,7 +368,7 @@
    <attribute name="dockWidgetArea">
     <number>1</number>
    </attribute>
-   <widget class="QWidget" name="dockWidgetContents_5">
+   <widget class="QWidget" name="tresholdDockContent">
     <layout class="QVBoxLayout" name="verticalLayout_4">
      <item>
       <layout class="QHBoxLayout" name="horizontalLayout_3">
@@ -522,7 +522,7 @@
    <attribute name="dockWidgetArea">
     <number>1</number>
    </attribute>
-   <widget class="QWidget" name="dockWidgetContents_4">
+   <widget class="QWidget" name="contourDockContent">
     <layout class="QVBoxLayout" name="verticalLayout_2">
      <item>
       <widget class="QGroupBox" name="contourGB">
@@ -936,6 +936,54 @@ background-color: rgb(255, 102, 136);</string>
     <hint type="destinationlabel">
      <x>129</x>
      <y>401</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>clrImgCommand</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>clrImgAc</receiver>
+   <slot>setChecked(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>103</x>
+     <y>149</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>trImgCommand</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>trImgAct</receiver>
+   <slot>setChecked(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>103</x>
+     <y>247</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>bwImgCommand</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>bwImgAct</receiver>
+   <slot>setChecked(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>103</x>
+     <y>198</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>-1</x>
+     <y>-1</y>
     </hint>
    </hints>
   </connection>

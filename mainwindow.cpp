@@ -3,6 +3,8 @@
 #include "ui_mainwindow.h"
 
 //TODO Нормавльный класс констант
+//TODO Синхронное переключение выпадающего меню и кнопок при изменении вида
+//Ресайзинг и скейлинг
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -10,8 +12,9 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
     imageLabel = ui->imageLabel;
+    core = new ImgProc();
     resize(QGuiApplication::primaryScreen()->availableSize() * SCREEN_SCALE );
-    connectors();
+    viewerModeToggleEnabled(false);
    // imageLabel->setScaledContents(true);
   //  ui->scrolArea->setWidget(imageLabel);
   //  ui->scrolArea->setVisible(false);
@@ -23,12 +26,12 @@ static void initializeImageFileDialog(QFileDialog &dialog, QFileDialog::AcceptMo
 {
     static bool firstDialog = true;
 
-    if (firstDialog) {
+    if (firstDialog)
+    {
         firstDialog = false;
         const QStringList picturesLocations = QStandardPaths::standardLocations(QStandardPaths::PicturesLocation);
 //WARNING Change required
-        dialog.setDirectory(!picturesLocations.isEmpty() ? OPEN_PATH_DEFAULT
-                                                        : picturesLocations.last());
+        dialog.setDirectory(!picturesLocations.isEmpty() ? OPEN_PATH_DEFAULT : picturesLocations.last());
     }
 
     QStringList mimeTypeFilters;
@@ -42,7 +45,6 @@ static void initializeImageFileDialog(QFileDialog &dialog, QFileDialog::AcceptMo
     if (acceptMode == QFileDialog::AcceptSave)
         dialog.setDefaultSuffix(SUFFIX_FILTER_BMP);
 }
-
 
 //Загружает картинку из файловой системы: проверка существования файла и типа + устанавливает необходимую трансформацию
 //Возвращает статус, смог ли загрузить в итоге или нет
@@ -74,11 +76,21 @@ bool MainWindow::loadFile(const QString &fileName)
             .arg(image.depth()); // Битность
     statusBar()->showMessage(message, TIMEOUT);
     ui->scrolArea->setVisible(true);
+    return true;
 }
 
-void MainWindow::connectors()
+void MainWindow::updateView(const QImage &newImage)
 {
-    connect(this, imgUpdatedSignal, this, renderUi);
+    imageLabel->setPixmap(QPixmap::fromImage(newImage));
+}
+
+void MainWindow::viewerModeToggleEnabled(bool state)
+{
+    ui->imageViewDock->setEnabled(state);
+
+    ui->clrImgAc->setEnabled(state);
+    ui->bwImgAct->setEnabled(state);
+    ui->trImgAct->setEnabled(state);
 }
 
 MainWindow::~MainWindow()
@@ -96,6 +108,7 @@ void MainWindow::on_saveAct_triggered()
     saveImg(ui->pathLE->text());
 }
 
+
 void MainWindow::on_saveAsAct_triggered()
 {
    saveImg(QFileDialog::getSaveFileName(this));
@@ -105,30 +118,6 @@ void MainWindow::on_saveAsAct_triggered()
 void MainWindow::on_exitActr_triggered()
 {
     qApp->exit(0);
-}
-
-
-//Полноэкранный режим
-//void MainWindow::on_fullScreenAct_triggered()
-//{
-//    bool fullScreenMode = ui->fullScreenAct->isChecked();
-//    fullScreenMode ? showFullScreen() : showNormal();
-//    ui->fullScreenAct->setChecked( fullScreenMode );
-//}
-
-void MainWindow::on_clrImgAc_triggered()
-{
-
-}
-
-void MainWindow::on_bwImgAct_triggered()
-{
-
-}
-
-void MainWindow::on_trImgAct_triggered()
-{
-
 }
 
 //Перезапуск
@@ -164,37 +153,8 @@ bool MainWindow::saveImg(const QString &fileName)
     return true;
 }
 
-//Обновление состояния элементов управления в зависимости от режима просмотра изображения
-void MainWindow::updateUI(MainWindow::EditorMode mode)
-{
+////Обновление состояния элементов управления в зависимости от режима просмотра изображения
 
-    //TODO active/inactive icons
-    //bool uiActive = false, docEdited = false, notSaved = false;
-    bool *state = new bool[4];
-    for(auto it = state[0]; it !=state[3]; ++it ) {
-        it = false;
-    }
-
-    switch (mode) {
-    case  OPENED:
-
-        //Active = true, Edited = false, HaveToSave = false
-        break;
-    case EDITED:
-        //Active = true, Edited = true, HaveToSave = true
-    case SAVED:
-        //Active = true, Edited = true, HaveToSave = false
-        break;
-    default:
-        //Active = false, Edited = false, HaveToSave = false
-        break;
-    }
-
-    ui->saveAct;
-    ui->saveAsAct;
-
-
-}
 
 //Копирует данные нового фалйа в поле класса
 //Обновляет интерфейс
@@ -203,13 +163,11 @@ void MainWindow::updateUI(MainWindow::EditorMode mode)
 void MainWindow::setImage(const QImage &newImage)
 {
     image = newImage;
-    originalImgCopy = saveOriginalCopy(newImage);
-
-    imageLabel->setPixmap(QPixmap::fromImage(image));
-
+    core->loadImage(newImage);
+    updateView( core->getImgClr() );
+    viewerModeToggleEnabled( !newImage.isNull() );
     scaleFactor = ZOOM_SCALE;
     ui->scrolArea->setVisible(true);
-
 }
 
 void MainWindow::scaleImage(double factor)
@@ -231,37 +189,29 @@ void MainWindow::ajustScrollBar(QScrollBar *scrollBar, double factor)
                             + ((factor - 1) * scrollBar->pageStep()/2)));
 }
 
-int MainWindow::getPixelBrightness(QRgb pixel)
-{
-    return qRed(pixel)*RED_RATIO + qGreen(pixel)*GREEN_RATIO + qBlue(pixel)*BLUE_RATIO;
-}
-
-void MainWindow::setBW(QImage &img)
-{
-    for (int i = 0; i < img.size().width(); i++)
-       for (int j = 0; j < img.size().height(); j++)
-       {
-           QRgb color = img.pixel(i, j);
-           int gray = getPixelBrightness(color);
-           img.setPixel(i, j, qRgb(gray, gray, gray));
-       }
-}
-
 void MainWindow::fitToWindow()
 {
-    //imageLabel->adjustSize();
-    //bool fitMode = ui->fitImgAct->isChecked();
-
-    //ui->fitImgAct->setChecked( fitMode );
-
-    imageLabel->resize(imageLabel->pixmap()->size());
+    ui->scrolArea->setWidgetResizable(true);
+    imageLabel->setScaledContents(true);
+    imageLabel->resize(image.size());
 }
 
+void MainWindow::normalSize() {
+    imageLabel->adjustSize();
+    scaleFactor = 1;
+}
+
+void MainWindow::zoomIn() {
+    scaleImage(1.25);
+}
+
+void MainWindow::zoomOut() {
+    scaleImage(0.8);
+}
 
 void MainWindow::on_fitImgAct_triggered()
 {
-    ui->fitImgAct->isChecked() ?
-             normalSize():  fitToWindow();
+    ui->fitImgAct->isChecked() ? normalSize() :  fitToWindow();
 }
 
 void MainWindow::on_pathTB_clicked()
@@ -269,8 +219,63 @@ void MainWindow::on_pathTB_clicked()
     openImg();
 }
 
-void MainWindow::on_bwImgCommand_toggled(bool)
+//Toggle эмитится при переключении состояния группы кнопок
+//Если убрать проверку на checked, то событие отрабатывается 2 раза
+//При смене состояния группы кнопок эмитится соответсвующее действие
+void MainWindow::on_clrImgCommand_toggled(bool checked)
 {
-    setBW(image);
-    emit imgUpdatedSignal();
+    if ( checked )
+        ui->clrImgAc->triggered(true);
 }
+
+void MainWindow::on_bwImgCommand_toggled(bool checked)
+{
+    if ( checked )
+        ui->bwImgAct->triggered(true);
+}
+
+void MainWindow::on_trImgCommand_toggled(bool checked)
+{
+    if ( checked )
+        ui->trImgAct->triggered(true);
+}
+
+
+void MainWindow::on_clrImgAc_triggered()
+{
+    updateView( core->getImgClr() );
+}
+
+void MainWindow::on_bwImgAct_triggered()
+{
+    updateView( core->getImgBw() );
+    ui->trLevelSB->setValue( core->getAutoTr() );
+}
+
+void MainWindow::on_trImgAct_triggered()
+{
+
+}
+
+
+void MainWindow::on_zoomInAct_triggered()
+{
+        zoomIn();
+
+}
+
+void MainWindow::on_zoomOutAct_triggered()
+{
+        zoomOut();
+}
+
+//void MainWindow::on_trManualGB_toggled(bool arg1)
+//{
+//    arg1 ? trImage = setTresholdAuto(image) : setTresholdManual(image, ui->tresholdSlider->value());
+//    imageLabel->setPixmap(setTresholdAuto(trImage));
+//}
+
+//void MainWindow::on_tresholdSlider_sliderMoved(int position)
+//{
+
+//}

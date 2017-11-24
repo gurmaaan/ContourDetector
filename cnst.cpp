@@ -56,23 +56,6 @@ const QString Cnst::img(ImgType type)
     }
 }
 
-const double Cnst::factor(ColorFactor clr)
-{
-    switch (clr) {
-    case ColorFactor::RedF:
-        return RED_RATIO;
-        break;
-    case ColorFactor::GreenF:
-        return GREEN_RATIO;
-    case ColorFactor::BlueF:
-        return BLUE_RATIO;
-    default:
-        return 0;
-        break;
-    }
-
-}
-
 const double Cnst::scaling(Scale mode)
 {
     switch (mode) {
