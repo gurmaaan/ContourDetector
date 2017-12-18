@@ -13,8 +13,8 @@ ImgProc::ImgProc()
 
 void ImgProc::loadImage(const QImage &image)
 {
-    loaded = !image.isNull();
-    if ( loaded ) {
+    _loaded = !image.isNull();
+    if ( _loaded ) {
         setImgClr(image);
         qInfo() << "Color copy : done";
     } else {
@@ -22,11 +22,12 @@ void ImgProc::loadImage(const QImage &image)
     }
     calculateSize(image);
     convertToBw(image);
-    if ( bwconverted ) {
+    if ( _bwconverted ) {
         qInfo() << "BW copy : done";
     }
 
-    autoTr = calculateTr(image);
+    autoTr = calculateTrVal(image);
+    _trcalculated = convertToTr(autoTr);
 }
 
 QImage ImgProc::getImgClr() const
@@ -54,21 +55,27 @@ int ImgProc::getAutoTr() const
     return autoTr;
 }
 
-//bool ImgProc::calculateTr(QImage image)
-//{
+QImage ImgProc::getImgTr(int lavel)
+{
+    if (_bwconverted ) convertToTr(lavel);
+    return imgTr;
+}
 
-//}
+void ImgProc::setImgTr(const QImage &value)
+{
+    imgTr = value;
+}
 
 bool ImgProc::calculateSize(const QImage &image)
 {
-    if ( loaded ) {
-        w = image.size().width();
-        h = image.size().height();
-        qInfo() << "\nImage size :\n\twidth - " << w << "\n\theight - " << h;
+    if ( _loaded ) {
+        _w = image.size().width();
+        _h = image.size().height();
+        qInfo() << "\nImage size :\n\twidth - " << _w << "\n\theight - " << _h;
         return true;
     }
     else {
-        w = 0, h = 0;
+        _w = 0, _h = 0;
         qCritical() << "Couldn't calculate image size : image wasn't load";
         return false;
     }
@@ -77,21 +84,21 @@ bool ImgProc::calculateSize(const QImage &image)
 void ImgProc::convertToBw(const QImage &image)
 {
     setImgBw(image);
-    if ( loaded )
+    if ( _loaded )
     {
-        for (int i = 0; i < w; i++)
+        for (int i = 0; i < _w; i++)
         {
-            for (int j = 0; j < h; j++)
+            for (int j = 0; j < _h; j++)
             {
                 int gray = getPixelBrightness( image.pixel(i, j) );
                 imgBw.setPixel(i, j, qRgb(gray, gray, gray));
             }
         }
-        bwconverted = true;
+        _bwconverted = true;
     } else
     {
         qDebug() <<"Doesn't convert to BW : image not loaded";
-        bwconverted = false;
+        _bwconverted = false;
     }
 }
 
@@ -100,14 +107,42 @@ int ImgProc::getPixelBrightness(QRgb pixel)
     return qRed(pixel)*RED_RATIO + qGreen(pixel)*GREEN_RATIO + qBlue(pixel)*BLUE_RATIO;
 }
 
-int ImgProc::calculateTr(const QImage &image)
+int ImgProc::calculateTrVal(const QImage &image)
 {
     long int brightSum = 0;
-    for (int i = 0; i < w; ++i) {
-        for (int j = 0; j < h; ++j) {
+    for (int i = 0; i < _w; ++i) {
+        for (int j = 0; j < _h; ++j) {
             brightSum += getPixelBrightness( image.pixel(i, j) );
         }
     }
 
-    return brightSum / (w * h);
+    return brightSum / (_w * _h);
+}
+
+bool ImgProc::convertToTr(int val)
+{
+    tr = val;
+    QVector<QRgb*> brigntMap;
+    setImgTr(imgBw);
+
+    imgTr = imgBw.convertToFormat(QImage::Format_ARGB32);
+    QVector<bool> objectMap;
+
+    if (_loaded && _bwconverted)
+    {
+        for (int j = 0; j < _h; j++) {
+            QRgb *line = (QRgb *)imgTr.scanLine(j);
+            brigntMap.push_back( line );
+        }
+    } else
+        return false;
+
+//    for (int j = 0 ; j < h ; j ++) {
+//        for (int i = 0; i < w; i++)
+//        {
+//            const QColor clr = ( qGray(brigntMap.at(j)[i]) == val ) ? Qt::black : Qt ::white;
+//            imgTr.setPixelColor(i, j, clr);
+//        }
+//    }
+    return true;
 }

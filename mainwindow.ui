@@ -987,5 +987,53 @@ background-color: rgb(255, 102, 136);</string>
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>trImgAct</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>trImgCommand</receiver>
+   <slot>setChecked(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>103</x>
+     <y>247</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>bwImgAct</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>bwImgCommand</receiver>
+   <slot>setChecked(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>103</x>
+     <y>198</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>clrImgAc</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>clrImgCommand</receiver>
+   <slot>setChecked(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>103</x>
+     <y>149</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
 </ui>

@@ -17,11 +17,13 @@ public:
     ImgProc(const QImage &image);
     ImgProc();
 
-    bool    loaded = false,
-            bwconverted = false,
-            trcalculated = false;
-    int w = 0,
-        h = 0;
+    bool    _loaded         = false;
+    bool    _bwconverted    = false;
+    bool    _trcalculated   = false;
+
+    int _w = 0;
+    int _h = 0;
+
     void loadImage(const QImage &image);
 
     QImage getImgClr() const;
@@ -30,7 +32,11 @@ public:
     QImage getImgBw() const;
     void setImgBw(const QImage &value);
 
+    QVector<QVector<bool>> mask;
     int getAutoTr() const;
+
+    QImage getImgTr(int lavel);
+    void setImgTr(const QImage &value);
 
 private:
     QImage  *img; //изображение с которым постоянно работаем и его же обрабатываем
@@ -42,9 +48,13 @@ private:
         tr = 0; //текущее значение уровня бинаризации
 
     bool calculateSize(const QImage &image);
+
     void convertToBw(const QImage &image);
     int getPixelBrightness(QRgb pixel);
-    int calculateTr(const QImage &image);
+
+    int calculateTrVal(const QImage &image);
+    bool convertToTr(int val);
 };
 
 #endif // IMGPROC_H
+;

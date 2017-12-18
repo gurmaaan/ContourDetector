@@ -1,5 +1,6 @@
 #ifndef CNST_H
 #define CNST_H
+#include <QImageReader>
 
 //Коэфициент размера окна программы относительно размер экрана
 #define SCREEN_SCALE 0.75
@@ -15,17 +16,29 @@
 #define RGB_WHITE qRgb(255, 255, 255)
 #define RGB_RED qRgb(255, 0, 0)
 
+
 //Фильтры типа файлов
-#define TYPE_FILTER_BMP "Bitmap Image (*.bmp)"
-#define TYPE_FILTER_PNG "PNG Images (*.png)"
-#define TYPE_FILTER_JPG "JPG Images (*.jpg)"
-#define TYPE_FILTER_TIF "TIF Images (*.tif)"
+#define TFS ";;"
+//по названию (Отсеивание конкретно этих типов среди остальных )
+#define N_F_PNG QString("PNG Images (*.png)")
+#define N_F_BMP QString("Bitmap Image (*.bmp)")
+#define N_F_JPG QString("JPG Images (*.jpg)")
+#define N_F_TIF QString("TIF Images (*.tif)")
+#define N_F_ALL (N_F_BMP + TFS + N_F_JPG + TFS + N_F_PNG + TFS + N_F_TIF)
+
+//По типу группы формата для интернета ()
+#define MIME_BMP QString("image/bmp")
+#define MIME_PNG QString("image/png")
+#define MIME_JPG QString("image/jpg")
+#define MIME_TIF QString("img/tif")
+#define MIME_ALL (MIME_BMP + TFS + MIME_JPG + TFS + MIME_PNG + TFS + MIME_TIF)
 
 //Фильтры суффикса
-#define SUFFIX_FILTER_BMP "bmp"
-#define SUFFIX_FILTER_PNG "png"
-#define SUFFIX_FILTER_JPG "jpg"
-#define SUFFIX_FILTER_TIF "tif"
+#define S_F_BMP QString(".bmp" )
+#define S_F_PNG QString(".png" )
+#define S_F_JPG QString(".jpg" )
+#define S_F_TIF QString(".tif" )
+#define S_F_ALL (S_F_BMP + TFS + S_F_JPG + TFS + S_F_PNG + TFS + S_F_TIF)
 
 //Стиль кнопки колорпикера
 #define CLR_PCKR_STYLE "border: 1px solid black; background-color: "
@@ -42,81 +55,7 @@
 
     //Путь
 // WARNING:: Chenge before Proni
-#define OPEN_PATH_DEFAULT "%HOMEPATH%YandexDisk/EDUCATION/Research/Molchanov/ContourDetector/TestImages/"
-
-#include <QObject>
-#include <QMetaClassInfo>
-
     //Время отображения сообщения в статус баре
-#define TIMEOUT 500
-
-class Cnst : public QObject
-{
-    Q_OBJECT
-public:
-    explicit Cnst(QObject *parent = nullptr);
-
-    enum SuccessMessage
-    {
-        ImgOpened,
-        ImgSaved
-    };
-
-    enum ErrorMessage
-    {
-        ImgOpenFailed,
-        ImgSaveFailed
-    };
-
-    enum DialogTitle
-    {
-        SelectImg
-    };
-
-    enum ImgType
-    {
-        BmpFilter,
-        PngFilter,
-        JpgFilter,
-        TifFilter,
-
-        BmpSuffix,
-        PngSuffix,
-        JpgSuffix,
-        TifSuffix
-    };
-
-    enum RgbClr
-    {
-        Black,
-        White,
-        Red
-    };
-
-    enum Scale
-    {
-        Screen,
-        Zoom
-    };
-
-    enum ColorFactor
-    {
-        RedF,
-        GreenF,
-        BlueF
-    };
-
-    const double factor(ColorFactor clr);
-    static const double scaling(Scale mode);
-
-    static const QString errorMessageText(ErrorMessage type);
-    static const QString img(ImgType type);
-
-signals:
-    void pushMessage(const QString mes);
-
-public slots:
-    void showMessage(const QString command);
-};
+#define TIMEOUT 5000
 
 #endif // CNST_H

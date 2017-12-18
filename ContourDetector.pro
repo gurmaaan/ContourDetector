@@ -26,7 +26,6 @@ DEFINES += QT_DEPRECATED_WARNINGS
 SOURCES += \
         main.cpp \
         mainwindow.cpp \
-    cnst.cpp \
     imgproc.cpp
 
 HEADERS += \
@@ -42,4 +41,6 @@ RC_FILE += \
 
 RESOURCES += \
     source.qrc
+
+STATECHARTS +=
 

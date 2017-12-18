@@ -30,41 +30,55 @@ class MainWindow : public QMainWindow
 public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
-    ImgProc *core;
-    Cnst config;
+
+    enum AppState {
+        NoActiveFile,
+        FileOpened
+    };
 
     bool loadFile(const QString &);
 
 public slots:
     void updateView(const QImage &newImage);
-    void viewerModeToggleEnabled(bool state);
+    void switchState(AppState mode);
 
 private slots:
+
+    //Слоты действия с файлами
     void on_openAct_triggered();
     void on_saveAct_triggered();
     void on_saveAsAct_triggered();
     void on_pathTB_clicked();
+    //------------------
 
+    //Действия с программой
     void on_exitActr_triggered();
     void on_restartAct_triggered();
+    //------------------
 
+    //Ресайзинг изображения
     void on_fitImgAct_triggered();
-
     void on_zoomInAct_triggered();
     void on_zoomOutAct_triggered();
-   // void on_trManualGB_toggled(bool arg1);
-    //void on_tresholdSlider_sliderMoved(int position);
+    //------------------
 
+    //Переключатель формата отображения изображения
     void on_clrImgAc_triggered();
     void on_bwImgAct_triggered();
     void on_trImgAct_triggered();
-
+    //---Кнопки-дубликаты (двусторонняя связь)---
     void on_clrImgCommand_toggled(bool checked);
     void on_bwImgCommand_toggled(bool checked);
     void on_trImgCommand_toggled(bool checked);
+    //------------------
+
+    //Виджет управления бинаризацией
+    void on_tresholdSlider_sliderMoved(int position);
+    //------------------
 
 private:
     Ui::MainWindow *ui;
+    ImgProc *core;
     QLabel *imageLabel;
     QImage image;
 

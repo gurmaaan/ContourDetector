@@ -1,23 +1,24 @@
 #include "cnst.h"
 #include "mainwindow.h"
+#include <QDir>
 #include "ui_mainwindow.h"
 
-//TODO Нормавльный класс констант
-//TODO Синхронное переключение выпадающего меню и кнопок при изменении вида
-//Ресайзинг и скейлинг
+//TOD Ресайзинг и скейлинг
+//TODO Сохранение
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
-    ui(new Ui::MainWindow)
+    ui(new Ui::MainWindow),
+    core(new ImgProc),
+    imageLabel(new QLabel)
 {
     ui->setupUi(this);
+    switchState(AppState::FileOpened);
     imageLabel = ui->imageLabel;
-    core = new ImgProc();
     resize(QGuiApplication::primaryScreen()->availableSize() * SCREEN_SCALE );
-    viewerModeToggleEnabled(false);
-   // imageLabel->setScaledContents(true);
-  //  ui->scrolArea->setWidget(imageLabel);
-  //  ui->scrolArea->setVisible(false);
+
+    imageLabel->setScaledContents(true);
+
    // setCentralWidget(ui->scrolArea);
 }
 
@@ -29,29 +30,48 @@ static void initializeImageFileDialog(QFileDialog &dialog, QFileDialog::AcceptMo
     if (firstDialog)
     {
         firstDialog = false;
-        const QStringList picturesLocations = QStandardPaths::standardLocations(QStandardPaths::PicturesLocation);
-//WARNING Change required
-        dialog.setDirectory(!picturesLocations.isEmpty() ? OPEN_PATH_DEFAULT : picturesLocations.last());
+        const QStringList myPicturesPath = QStandardPaths::standardLocations(QStandardPaths::PicturesLocation);
+        dialog.setDirectory( !myPicturesPath.isEmpty() ? QApplication::applicationFilePath() : myPicturesPath.last() ); //WARNING Change required
     }
 
-    QStringList mimeTypeFilters;
-    const QByteArrayList supportedMimeTypes = acceptMode == QFileDialog::AcceptOpen
+    //Создали лист бит => получаем список поддерживаемыхх форматов системй!! в зависимости от открытия или сохранения картинки
+    const QByteArrayList supportedTypes = acceptMode == QFileDialog::AcceptOpen
         ? QImageReader::supportedMimeTypes() : QImageWriter::supportedMimeTypes();
-    foreach (const QByteArray &mimeTypeName, supportedMimeTypes)
-        mimeTypeFilters.append(mimeTypeName);
-    mimeTypeFilters.sort();
-    dialog.setMimeTypeFilters(mimeTypeFilters);
-    dialog.selectMimeTypeFilter(TYPE_FILTER_BMP);
+
+    //Из полученного массива извлекаем строки названия формата по которому будут фильтроваться файлы в диалоге (поддерживаемые типы картинок)
+    QStringList typeFilter;
+    foreach (const QByteArray &mimeTypeName, supportedTypes)
+        typeFilter.append(mimeTypeName);
+    //typeFilter.sort();
+
+    dialog.setMimeTypeFilters(typeFilter); //Установить фильтр на файлы - отображать только изображения любого типа (как в списке так и видно)
+    dialog.selectMimeTypeFilter(MIME_ALL); //Среди полученных выбрать группу опр формата
+
     if (acceptMode == QFileDialog::AcceptSave)
-        dialog.setDefaultSuffix(SUFFIX_FILTER_BMP);
+        dialog.setDefaultSuffix( S_F_ALL ); //При сохранении сам добавляет выбранный суффикс (.формат) к файлы
+    //При выборе картинки роли не играет
 }
 
-//Загружает картинку из файловой системы: проверка существования файла и типа + устанавливает необходимую трансформацию
-//Возвращает статус, смог ли загрузить в итоге или нет
+//Функция запускаемая по нажатию кнопки - создаем диаллог, передаем в функцию загрузки
+void MainWindow::openImg()
+{
+    QFileDialog dialog(this);
+    initializeImageFileDialog(dialog, QFileDialog::AcceptOpen);
+
+    //Пока код выхода диалога равен не ноль (окно открыто) ждем когда функция loadFile прочитает сам файл
+    //Функция считывания ждем пока диалог не вернет список
+    while ( dialog.exec() == QDialog::Accepted &&
+            !loadFile( dialog.selectedFiles().first() )  ) {
+        //Никогда не исполнется
+    }
+}
+
+//На вход стандартный диалог, кот превращаетсчя в считыватель изображений
 bool MainWindow::loadFile(const QString &fileName)
 {
+    //Иници
     QImageReader reader(fileName);
-    reader.setAutoTransform(true);
+    reader.setAutoTransform(false);
     const QImage newImage = reader.read();
 
     //Если файла не существует, то выводим сообщение об ошибке, диалог не закрываем
@@ -74,6 +94,7 @@ bool MainWindow::loadFile(const QString &fileName)
         .arg(QDir::toNativeSeparators(fileName)) //Имя без пути
         .arg(image.width()).arg(image.height()) //Размер
             .arg(image.depth()); // Битность
+    qDebug() << message;
     statusBar()->showMessage(message, TIMEOUT);
     ui->scrolArea->setVisible(true);
     return true;
@@ -81,16 +102,16 @@ bool MainWindow::loadFile(const QString &fileName)
 
 void MainWindow::updateView(const QImage &newImage)
 {
-    imageLabel->setPixmap(QPixmap::fromImage(newImage));
+    ui->imageLabel->setPixmap(QPixmap::fromImage(newImage));
 }
 
-void MainWindow::viewerModeToggleEnabled(bool state)
+void MainWindow::switchState(MainWindow::AppState mode)
 {
-    ui->imageViewDock->setEnabled(state);
-
-    ui->clrImgAc->setEnabled(state);
-    ui->bwImgAct->setEnabled(state);
-    ui->trImgAct->setEnabled(state);
+   // bool fno = mode ? true : false;
+    ui->imageViewDockContent->setEnabled(mode);
+    ui->saveAct->setEnabled(mode);
+    ui->saveAsAct->setEnabled(mode);
+    ui->viewTB->setEnabled(mode);
 }
 
 MainWindow::~MainWindow()
@@ -127,15 +148,7 @@ void MainWindow::on_restartAct_triggered()
     QProcess::startDetached(qApp->arguments()[0], qApp->arguments());
 }
 
-//Объединяющий метод открытия
-void MainWindow::openImg()
-{
-    QFileDialog dialog(this, QString(OPEN_NORMAL));
-    initializeImageFileDialog(dialog, QFileDialog::AcceptOpen);
 
-    while ( dialog.exec() == QDialog::Accepted
-            && !loadFile( dialog.selectedFiles().first() )  ) {}
-}
 
 bool MainWindow::saveImg(const QString &fileName)
 {
@@ -165,16 +178,16 @@ void MainWindow::setImage(const QImage &newImage)
     image = newImage;
     core->loadImage(newImage);
     updateView( core->getImgClr() );
-    viewerModeToggleEnabled( !newImage.isNull() );
+
     scaleFactor = ZOOM_SCALE;
     ui->scrolArea->setVisible(true);
 }
 
 void MainWindow::scaleImage(double factor)
 {
-    Q_ASSERT(imageLabel->pixmap());
+    Q_ASSERT(ui->imageLabel->pixmap());
     scaleFactor *= factor;
-    imageLabel->resize(scaleFactor * imageLabel->pixmap()->size());
+    ui->imageLabel->resize(scaleFactor * ui->imageLabel->pixmap()->size());
 
     ajustScrollBar(ui->scrolArea->horizontalScrollBar(), factor);
     ajustScrollBar(ui->scrolArea->verticalScrollBar(), factor);
@@ -192,12 +205,12 @@ void MainWindow::ajustScrollBar(QScrollBar *scrollBar, double factor)
 void MainWindow::fitToWindow()
 {
     ui->scrolArea->setWidgetResizable(true);
-    imageLabel->setScaledContents(true);
-    imageLabel->resize(image.size());
+    ui->imageLabel->setScaledContents(true);
+    ui->imageLabel->resize(image.size());
 }
 
 void MainWindow::normalSize() {
-    imageLabel->adjustSize();
+    ui->imageLabel->adjustSize();
     scaleFactor = 1;
 }
 
@@ -254,7 +267,7 @@ void MainWindow::on_bwImgAct_triggered()
 
 void MainWindow::on_trImgAct_triggered()
 {
-
+    updateView( core->getImgTr( ui->trLevelSB->value() ) );
 }
 
 
@@ -269,13 +282,7 @@ void MainWindow::on_zoomOutAct_triggered()
         zoomOut();
 }
 
-//void MainWindow::on_trManualGB_toggled(bool arg1)
-//{
-//    arg1 ? trImage = setTresholdAuto(image) : setTresholdManual(image, ui->tresholdSlider->value());
-//    imageLabel->setPixmap(setTresholdAuto(trImage));
-//}
-
-//void MainWindow::on_tresholdSlider_sliderMoved(int position)
-//{
-
-//}
+void MainWindow::on_tresholdSlider_sliderMoved(int position)
+{
+    updateView( core->getImgTr(position) );
+}
