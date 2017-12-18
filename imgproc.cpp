@@ -137,12 +137,12 @@ bool ImgProc::convertToTr(int val)
     } else
         return false;
 
-//    for (int j = 0 ; j < h ; j ++) {
-//        for (int i = 0; i < w; i++)
-//        {
-//            const QColor clr = ( qGray(brigntMap.at(j)[i]) == val ) ? Qt::black : Qt ::white;
-//            imgTr.setPixelColor(i, j, clr);
-//        }
-//    }
+    for (int j = 0 ; j < _h ; j ++) {
+        for (int i = 0; i < _w; i++)
+        {
+            const QColor clr = ( qGray(brigntMap.at(j)[i]) == val ) ? Qt::black : Qt ::white;
+            imgTr.setPixelColor(i, j, clr);
+        }
+    }
     return true;
 }
