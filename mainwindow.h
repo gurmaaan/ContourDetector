@@ -39,11 +39,12 @@ public:
     bool loadFile(const QString &);
 
 public slots:
-    void updateView(const QImage &newImage);
+    void updateView(QImage *newImage);
     void switchState(AppState mode);
+    //void pushMessage(const QString &message);
 
 private slots:
-
+//TODO : Действие в раздел контуров
     //Слоты действия с файлами
     void on_openAct_triggered();
     void on_saveAct_triggered();
@@ -75,6 +76,8 @@ private slots:
     //Виджет управления бинаризацией
     void on_tresholdSlider_sliderMoved(int position);
     //------------------
+
+    void on_closeAct_triggered();
 
 private:
     Ui::MainWindow *ui;

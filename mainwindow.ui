@@ -29,9 +29,6 @@
    <iconset resource="source.qrc">
     <normaloff>:/fawicon.ico</normaloff>:/fawicon.ico</iconset>
   </property>
-  <property name="statusTip">
-   <string>Готово</string>
-  </property>
   <property name="toolButtonStyle">
    <enum>Qt::ToolButtonTextUnderIcon</enum>
   </property>
@@ -74,6 +71,15 @@
           <height>510</height>
          </size>
         </property>
+        <property name="verticalScrollBarPolicy">
+         <enum>Qt::ScrollBarAlwaysOn</enum>
+        </property>
+        <property name="horizontalScrollBarPolicy">
+         <enum>Qt::ScrollBarAlwaysOn</enum>
+        </property>
+        <property name="sizeAdjustPolicy">
+         <enum>QAbstractScrollArea::AdjustIgnored</enum>
+        </property>
         <property name="widgetResizable">
          <bool>true</bool>
         </property>
@@ -83,7 +89,7 @@
            <x>0</x>
            <y>0</y>
            <width>658</width>
-           <height>521</height>
+           <height>498</height>
           </rect>
          </property>
          <layout class="QVBoxLayout" name="verticalLayout_7">
@@ -104,18 +110,14 @@
             <property name="text">
              <string/>
             </property>
+            <property name="pixmap">
+             <pixmap resource="source.qrc">:/icons/placeholder.png</pixmap>
+            </property>
             <property name="scaledContents">
-             <bool>false</bool>
+             <bool>true</bool>
             </property>
             <property name="alignment">
              <set>Qt::AlignCenter</set>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QScrollBar" name="horizontalScrollBar">
-            <property name="orientation">
-             <enum>Qt::Horizontal</enum>
             </property>
            </widget>
           </item>
@@ -177,6 +179,8 @@
      <string>&amp;Вид</string>
     </property>
     <addaction name="fitImgAct"/>
+    <addaction name="zoomInAct"/>
+    <addaction name="zoomOutAct"/>
     <addaction name="separator"/>
     <addaction name="clrImgAc"/>
     <addaction name="bwImgAct"/>
@@ -389,6 +393,9 @@
         <widget class="QSpinBox" name="trLevelSB">
          <property name="alignment">
           <set>Qt::AlignCenter</set>
+         </property>
+         <property name="readOnly">
+          <bool>true</bool>
          </property>
          <property name="buttonSymbols">
           <enum>QAbstractSpinBox::NoButtons</enum>
@@ -783,7 +790,7 @@ background-color: rgb(255, 102, 136);</string>
      <normaloff>:/icons/fullScreenIc.png</normaloff>:/icons/fullScreenIc.png</iconset>
    </property>
    <property name="text">
-    <string>Растянуть</string>
+    <string>Оригинал</string>
    </property>
    <property name="toolTip">
     <string>Вписать изображение в виджет</string>
@@ -838,6 +845,9 @@ background-color: rgb(255, 102, 136);</string>
    </property>
   </action>
   <action name="trLevelAutoAct">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
    <property name="icon">
     <iconset resource="source.qrc">
      <normaloff>:/icons/trLevelAutoImg.png</normaloff>:/icons/trLevelAutoImg.png</iconset>
@@ -846,6 +856,9 @@ background-color: rgb(255, 102, 136);</string>
     <string>Автоматический порог</string>
    </property>
    <property name="toolTip">
+    <string>Порог бинаризации определяется автоматически</string>
+   </property>
+   <property name="statusTip">
     <string>Порог бинаризации определяется автоматически</string>
    </property>
   </action>
@@ -875,6 +888,9 @@ background-color: rgb(255, 102, 136);</string>
    <property name="toolTip">
     <string>Увеличить изображение</string>
    </property>
+   <property name="shortcut">
+    <string>Ctrl+=</string>
+   </property>
   </action>
   <action name="zoomOutAct">
    <property name="icon">
@@ -886,6 +902,9 @@ background-color: rgb(255, 102, 136);</string>
    </property>
    <property name="toolTip">
     <string>Уменьшить изображение</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+-</string>
    </property>
   </action>
  </widget>

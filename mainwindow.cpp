@@ -1,10 +1,12 @@
 #include "cnst.h"
 #include "mainwindow.h"
+#include <QPixmap>
 #include <QDir>
 #include "ui_mainwindow.h"
-
-//TOD Ресайзинг и скейлинг
-//TODO Сохранение
+#include <QBitmap>
+#include <QMessageBox>
+//TODO : Ресайзинг и скейлинг (лагает пипец)
+//TODO : Сохранение картинки с указанными контурами
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -13,15 +15,22 @@ MainWindow::MainWindow(QWidget *parent) :
     imageLabel(new QLabel)
 {
     ui->setupUi(this);
-    switchState(AppState::FileOpened);
+    switchState(AppState::NoActiveFile);
     imageLabel = ui->imageLabel;
     resize(QGuiApplication::primaryScreen()->availableSize() * SCREEN_SCALE );
 
-    imageLabel->setScaledContents(true);
+    //TODO : нотификация в статусбаре
+    //WARNING : нужно унаследовать процессор изображений от QObject
+    //connect(core, &ImgProc::sendStatus, this, &MainWindow::pushMessage);
 
-   // setCentralWidget(ui->scrolArea);
+    ui->zoomInAct->setShortcut(QKeySequence::ZoomIn);
+    ui->zoomOutAct->setShortcut(QKeySequence::ZoomOut);
+
+    ui->scrolArea->horizontalScrollBar()->setEnabled(true);
+    ui->scrolArea->verticalScrollBar()->setEnabled(true);
 }
 
+//TODO : Drag and Drop Area
 //Инициализатор окна файловой системы в зависимости от необходимого действия (Октрыть / Сохранить)
 static void initializeImageFileDialog(QFileDialog &dialog, QFileDialog::AcceptMode acceptMode)
 {
@@ -31,7 +40,9 @@ static void initializeImageFileDialog(QFileDialog &dialog, QFileDialog::AcceptMo
     {
         firstDialog = false;
         const QStringList myPicturesPath = QStandardPaths::standardLocations(QStandardPaths::PicturesLocation);
-        dialog.setDirectory( !myPicturesPath.isEmpty() ? QApplication::applicationFilePath() : myPicturesPath.last() ); //WARNING Change required
+        //dialog.setDirectory( !myPicturesPath.isEmpty() ? QApplication::applicationFilePath() : myPicturesPath.last() );
+        const QString testImagesPath = QApplication::applicationDirPath() + ".//ContourDetector//TestImages";
+        dialog.setDirectory( testImagesPath.isEmpty() ? myPicturesPath.first() : testImagesPath );
     }
 
     //Создали лист бит => получаем список поддерживаемыхх форматов системй!! в зависимости от открытия или сохранения картинки
@@ -77,42 +88,65 @@ bool MainWindow::loadFile(const QString &fileName)
     //Если файла не существует, то выводим сообщение об ошибке, диалог не закрываем
     if (newImage.isNull())
     {
+        switchState(AppState::NoActiveFile);
         QMessageBox::information(this, QGuiApplication::applicationDisplayName(),
                                  ( QString(OPEN_FAILED) )
                                  .arg(QDir::toNativeSeparators(fileName), reader.errorString()));
         return false;
     }
+    else
+    {
+        //Если все в порядке, обновляем изображение на экране и в оперативке, меняем заголовок окна,
+        //Также выводим сообщение в статус баре с размером картинки и число бит на пиксель
 
-    //Если все в порядке, обновляем изображение на экране и в оперативке, меняем заголовок окна,
-    //Также выводим сообщение в статус баре с размером картинки и число бит на пиксель
+        setImage(newImage);
+        setWindowFilePath(fileName);
+        ui->pathLE->setText(fileName);
 
-    setImage(newImage);
-    setWindowFilePath(fileName);
-    ui->pathLE->setText(fileName);
+        const QString message = ( QString(OPEN_SUCCESS) )
+            .arg(QDir::toNativeSeparators(fileName)) //Имя без пути
+            .arg(image.width()).arg(image.height()) //Размер
+                .arg(image.depth()); // Битность
 
-    const QString message = ( QString(OPEN_SUCCESS) )
-        .arg(QDir::toNativeSeparators(fileName)) //Имя без пути
-        .arg(image.width()).arg(image.height()) //Размер
-            .arg(image.depth()); // Битность
-    qDebug() << message;
-    statusBar()->showMessage(message, TIMEOUT);
-    ui->scrolArea->setVisible(true);
+        ui->statusBar->clearMessage();
+        ui->statusBar->showMessage(message, TIMEOUT);
+        switchState(AppState::FileOpened);
+    }
     return true;
 }
 
-void MainWindow::updateView(const QImage &newImage)
+void MainWindow::updateView(QImage *newImage)
 {
-    ui->imageLabel->setPixmap(QPixmap::fromImage(newImage));
+    imageLabel->
 }
 
 void MainWindow::switchState(MainWindow::AppState mode)
 {
-   // bool fno = mode ? true : false;
+    //Left Docks
     ui->imageViewDockContent->setEnabled(mode);
+    ui->contourDockContent->setEnabled(mode);
+    ui->tresholdDockContent->setEnabled(mode);
+
+    //ScrollBars
+    ui->scrolArea->verticalScrollBar()->setEnabled(mode);
+    ui->scrolArea->horizontalScrollBar()->setEnabled(mode);
+
+    //Top ToolBars
     ui->saveAct->setEnabled(mode);
     ui->saveAsAct->setEnabled(mode);
     ui->viewTB->setEnabled(mode);
+
+    //Menu
+    ui->closeAct->setEnabled(mode);
+    ui->clrImgAc->setEnabled(mode);
+    ui->bwImgAct->setEnabled(mode);
+    ui->trImgAct->setEnabled(mode);
 }
+
+//void MainWindow::pushMessage(const QString &message)
+//{
+    //TODO : Status + Tray Icon messages
+//}
 
 MainWindow::~MainWindow()
 {
@@ -133,6 +167,14 @@ void MainWindow::on_saveAct_triggered()
 void MainWindow::on_saveAsAct_triggered()
 {
    saveImg(QFileDialog::getSaveFileName(this));
+}
+
+void MainWindow::on_closeAct_triggered()
+{
+    switchState(AppState::NoActiveFile);
+    QImage *placeholder = new QImage("qrc:/icons/placeholder.png");
+    updateView(*placeholder);
+    ui->pathLE->clear();
 }
 
 //Выход
@@ -166,7 +208,7 @@ bool MainWindow::saveImg(const QString &fileName)
     return true;
 }
 
-////Обновление состояния элементов управления в зависимости от режима просмотра изображения
+//   Обновление состояния элементов управления в зависимости от режима просмотра изображения
 
 
 //Копирует данные нового фалйа в поле класса
@@ -185,12 +227,14 @@ void MainWindow::setImage(const QImage &newImage)
 
 void MainWindow::scaleImage(double factor)
 {
-    Q_ASSERT(ui->imageLabel->pixmap());
+    Q_ASSERT(imageLabel->pixmap());
     scaleFactor *= factor;
-    ui->imageLabel->resize(scaleFactor * ui->imageLabel->pixmap()->size());
+    imageLabel->resize(scaleFactor * imageLabel->pixmap()->size());
 
     ajustScrollBar(ui->scrolArea->horizontalScrollBar(), factor);
     ajustScrollBar(ui->scrolArea->verticalScrollBar(), factor);
+
+    imageLabel->setAlignment(Qt::AlignCenter);
 
     ui->zoomInAct->setEnabled(scaleFactor < 3.0);
     ui->zoomOutAct->setEnabled(scaleFactor > 0.333);
@@ -198,28 +242,35 @@ void MainWindow::scaleImage(double factor)
 
 void MainWindow::ajustScrollBar(QScrollBar *scrollBar, double factor)
 {
+//    qDebug() << "ScrollBar new value: : " << int(factor * scrollBar->value()
+//                                                 + ((factor - 1) * scrollBar->pageStep()/2)) << scrollBar->value() << scrollBar->pageStep()/2;
     scrollBar->setValue(int(factor * scrollBar->value()
                             + ((factor - 1) * scrollBar->pageStep()/2)));
 }
 
+
+//TODO : Сделать нормальный скроллинг при помощи Scroll Area
 void MainWindow::fitToWindow()
 {
     ui->scrolArea->setWidgetResizable(true);
-    ui->imageLabel->setScaledContents(true);
-    ui->imageLabel->resize(image.size());
+    imageLabel->setScaledContents(true);
+    imageLabel->resize(image.size());
 }
 
 void MainWindow::normalSize() {
-    ui->imageLabel->adjustSize();
+    imageLabel->adjustSize();
     scaleFactor = 1;
 }
 
 void MainWindow::zoomIn() {
-    scaleImage(1.25);
+   scaleImage(1.25);
+   ui->scrolArea->scroll(0,0);
+   //ui->scrolArea->verticalScrollBar()->setValue(0);
 }
 
 void MainWindow::zoomOut() {
     scaleImage(0.8);
+    ui->scrolArea->scroll(0,0);
 }
 
 void MainWindow::on_fitImgAct_triggered()
@@ -262,27 +313,29 @@ void MainWindow::on_clrImgAc_triggered()
 void MainWindow::on_bwImgAct_triggered()
 {
     updateView( core->getImgBw() );
-    ui->trLevelSB->setValue( core->getAutoTr() );
+    ui->trLevelSB->setValue( core->getAutoTrBarrier() );
 }
 
 void MainWindow::on_trImgAct_triggered()
 {
-    updateView( core->getImgTr( ui->trLevelSB->value() ) );
+    core->genBitTrArray( ui->trLevelSB->value() );
+    updateView( core->getImgTr() );
 }
 
+//--------------------Zoom and Scaling ----------------
 
 void MainWindow::on_zoomInAct_triggered()
 {
-        zoomIn();
-
+    zoomIn();
 }
 
 void MainWindow::on_zoomOutAct_triggered()
 {
-        zoomOut();
+    zoomOut();
 }
 
 void MainWindow::on_tresholdSlider_sliderMoved(int position)
 {
-    updateView( core->getImgTr(position) );
+    core->genBitTrArray( position );
+    updateView( core->getImgTr() );
 }

@@ -15,5 +15,6 @@
         <file>icons/zoomOutIc.png</file>
         <file>icons/zoomInIc.png</file>
         <file>icons/icon.png</file>
+        <file>icons/placeholder.png</file>
     </qresource>
 </RCC>
