@@ -18,6 +18,7 @@
 
 #include "cnst.h"
 #include "imgproc.h"
+#include "qpainter.h"
 
 namespace Ui {
 class MainWindow;
@@ -72,9 +73,9 @@ private slots:
     void on_trImgCommand_toggled(bool checked);
     //------------------
 
-    //Виджет управления бинаризацией
-    void on_tresholdSlider_sliderMoved(int position);
-    //------------------
+    void on_tresholdSlider_valueChanged(int value);
+
+    void on_spinBox_valueChanged(int arg1);
 
 private:
     Ui::MainWindow *ui;
@@ -95,6 +96,11 @@ private:
     void normalSize();
     void zoomIn();
     void zoomOut();
+
+    QImage draw_binary();
+
+    int trSliderPos = 0;
+    int ctSliderPos = 1;
 };
 
 

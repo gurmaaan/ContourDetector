@@ -20,6 +20,7 @@ public:
     bool    _loaded         = false;
     bool    _bwconverted    = false;
     bool    _trcalculated   = false;
+    bool    _trconverted    = false;
 
     int _w = 0;
     int _h = 0;
@@ -36,6 +37,7 @@ public:
     int getAutoTr() const;
 
     QImage getImgTr(int lavel);
+    QImage getImgCt(int lavel);
     void setImgTr(const QImage &value);
 
 private:
@@ -43,7 +45,8 @@ private:
 
     QImage  imgClr, //цветная копия исходного
             imgBw, //чернобелая копию
-            imgTr; //изображение после трешолда
+            imgTr, //изображение после трешолда
+            imgCt; //изображение после нахождения границ
     int autoTr = 0, //значение порога бинаризации рассчитанное автоматически
         tr = 0; //текущее значение уровня бинаризации
 
@@ -54,6 +57,7 @@ private:
 
     int calculateTrVal(const QImage &image);
     bool convertToTr(int val);
+    bool convertToCt(int val);
 };
 
 #endif // IMGPROC_H

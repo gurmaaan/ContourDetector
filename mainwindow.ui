@@ -9,8 +9,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>907</width>
-    <height>679</height>
+    <width>900</width>
+    <height>806</height>
    </rect>
   </property>
   <property name="font">
@@ -82,8 +82,8 @@
           <rect>
            <x>0</x>
            <y>0</y>
-           <width>658</width>
-           <height>521</height>
+           <width>668</width>
+           <height>639</height>
           </rect>
          </property>
          <layout class="QVBoxLayout" name="verticalLayout_7">
@@ -132,7 +132,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>907</width>
+     <width>900</width>
      <height>25</height>
     </rect>
    </property>
@@ -436,6 +436,9 @@
           <property name="maximum">
            <number>255</number>
           </property>
+          <property name="singleStep">
+           <number>4</number>
+          </property>
           <property name="pageStep">
            <number>10</number>
           </property>
@@ -523,7 +526,7 @@
     <number>1</number>
    </attribute>
    <widget class="QWidget" name="contourDockContent">
-    <layout class="QVBoxLayout" name="verticalLayout_2">
+    <layout class="QHBoxLayout" name="horizontalLayout_8">
      <item>
       <widget class="QGroupBox" name="contourGB">
        <property name="title">
@@ -650,6 +653,19 @@ background-color: rgb(255, 102, 136);</string>
            </size>
           </property>
          </spacer>
+        </item>
+        <item>
+         <widget class="QSpinBox" name="spinBox">
+          <property name="suffix">
+           <string> px</string>
+          </property>
+          <property name="minimum">
+           <number>1</number>
+          </property>
+          <property name="maximum">
+           <number>15</number>
+          </property>
+         </widget>
         </item>
        </layout>
       </widget>

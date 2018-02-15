@@ -3,7 +3,7 @@
 #include <QDir>
 #include "ui_mainwindow.h"
 
-//TOD Ресайзинг и скейлинг
+//TODO Ресайзинг и скейлинг
 //TODO Сохранение
 
 MainWindow::MainWindow(QWidget *parent) :
@@ -18,6 +18,8 @@ MainWindow::MainWindow(QWidget *parent) :
     resize(QGuiApplication::primaryScreen()->availableSize() * SCREEN_SCALE );
 
     imageLabel->setScaledContents(true);
+
+
 
    // setCentralWidget(ui->scrolArea);
 }
@@ -282,7 +284,31 @@ void MainWindow::on_zoomOutAct_triggered()
         zoomOut();
 }
 
-void MainWindow::on_tresholdSlider_sliderMoved(int position)
+void MainWindow::on_tresholdSlider_valueChanged(int position)
 {
-    updateView( core->getImgTr(position) );
+    trSliderPos = position;
+    updateView( draw_binary() );
+}
+
+QImage MainWindow::draw_binary(){
+    QImage trImg = core->getImgTr( trSliderPos );
+    QImage ctImg ; // Contour image
+    if (ui->contourGB->isChecked()){
+//        ctImg = core->getImgCt( ctSliderPos );
+
+//        QImage result(trImg.width(), trImg.height(), QImage::Format_Mono);
+//        QPainter painter(&result);
+//        painter.drawImage(0, 0, trImg);
+//        painter.drawImage(0, 0, ctImg);
+//        return result
+
+        return core->getImgCt( ctSliderPos );
+    } else
+        return trImg;
+}
+
+void MainWindow::on_spinBox_valueChanged(int position)
+{
+    ctSliderPos = position;
+    updateView( draw_binary() );
 }
